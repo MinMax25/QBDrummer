@@ -244,7 +244,9 @@ namespace MinMax
 			noteEvent.busIndex = event.busIndex;
 			noteEvent.flags = Event::EventFlags::kIsLive;
 			noteEvent.type = Event::EventTypes::kNoteOnEvent;
+			noteEvent.sampleOffset = event.sampleOffset;
 			noteEvent.noteOn.channel = event.noteOn.channel;
+			noteEvent.noteOn.noteId = event.noteOn.noteId;
 			noteEvent.noteOn.pitch = outPitch;
 			noteEvent.noteOn.velocity = event.noteOn.velocity;
 			list.addEvent(noteEvent);
@@ -260,7 +262,9 @@ namespace MinMax
 			noteEvent.busIndex = event.busIndex;
 			noteEvent.flags = Event::EventFlags::kIsLive;
 			noteEvent.type = Event::EventTypes::kNoteOffEvent;
+			noteEvent.sampleOffset = event.sampleOffset;
 			noteEvent.noteOff.channel = event.noteOff.channel;
+			noteEvent.noteOff.noteId = event.noteOff.noteId;
 			noteEvent.noteOff.pitch = outPitch;
 			noteEvent.noteOff.velocity = event.noteOff.velocity;
 			list.addEvent(noteEvent);
