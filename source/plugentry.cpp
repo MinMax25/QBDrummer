@@ -2,12 +2,12 @@
 // Copyright(c) 2025 MinMax.
 //------------------------------------------------------------------------
 
+#include <public.sdk/source/main/pluginfactory.h>
+
 #include "plugprocessor.h"
 #include "plugcontroller.h"
 #include "plugcids.h"
 #include "version.h"
-
-#include "public.sdk/source/main/pluginfactory.h"
 
 #define stringPluginName "QBDrummer"
 
