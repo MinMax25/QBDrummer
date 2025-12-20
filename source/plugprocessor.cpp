@@ -20,8 +20,7 @@ namespace MinMax
 		Bypass = false;
 		Translate = true;
 
-		std::thread th(setAllPreset, &Map1, &Map2);
-		th.join();
+		setAllPreset(&Map1, &Map2);
 	}
 
 	MyVSTProcessor::~MyVSTProcessor()
@@ -60,8 +59,7 @@ namespace MinMax
 		streamer.readRaw(&Map1, sizeof(Preset));
 		streamer.readRaw(&Map2, sizeof(Preset));
 
-		std::thread th(setAllPreset, &Map1, &Map2);
-		th.join();
+		setAllPreset(&Map1, &Map2);
 
 		return kResultOk;
 	}
@@ -71,8 +69,7 @@ namespace MinMax
 		if (!state) return kResultFalse;
 		IBStreamer streamer(state, kLittleEndian);
 
-		std::thread th(getAllPreset, &Map1, &Map2);
-		th.join();
+		getAllPreset(&Map1, &Map2);
 
 		streamer.writeBool(Bypass);
 		streamer.writeBool(Translate);
@@ -106,6 +103,27 @@ namespace MinMax
 	tresult PLUGIN_API MyVSTProcessor::process(Vst::ProcessData& data)
 	{
 		processParameter(data);
+
+		if (Bypass)
+		{
+			// MIDIイベントをそのまま通す
+			if (data.inputEvents && data.outputEvents)
+			{
+				Event e;
+				for (int32 i = 0; i < data.inputEvents->getEventCount(); i++)
+				{
+					if (data.inputEvents->getEvent(i, e) == kResultOk)
+					{
+						data.outputEvents->addEvent(e);
+					}
+				}
+			}
+
+			// Audioは常にスルー
+			processAudio(data);
+			return kResultOk;
+		}
+
 		processEvent(data);
 		processAudio(data);
 
@@ -169,7 +187,12 @@ namespace MinMax
 	{
 		if (tag == PARAM_ID::BYPASS)
 		{
-			Bypass = (value > 0.5f);
+			bool newBypass = (value > 0.5f);
+			if (Bypass != newBypass)
+			{
+				NeedReset = true; // stuck note 防止
+			}
+			Bypass = newBypass;
 		}
 		else if (tag == PARAM_ID::TRANSLATE)
 		{
@@ -246,7 +269,7 @@ namespace MinMax
 	int16 PLUGIN_API MyVSTProcessor::getOutPitch(int16 inPitch)
 	{
 		uint16 artic{};
-		int16 outPitch{};
+		int16 outPitch = OFF_NOTE;
 		bool skip = false;
 
 		if (!Translate)
@@ -257,7 +280,7 @@ namespace MinMax
 		else
 		{
 			// Finding Articulation using Map 1 from In Pitch
-			for (int i = 0; i < sizeof(Map1.data) || Map1.data[i] == 0x00 || i < PRESET_SIZE; i++)
+			for (int i = 0; i < PRESET_SIZE && Map1.data[i] != 0x00; ++i)
 			{
 				if (Map1.data[i] > 0xc000)
 				{
@@ -270,11 +293,13 @@ namespace MinMax
 					artic = Map1.data[i] & 0x0fff;
 				}
 				else  if (!skip && (Map1.data[i] & 0x7f) == inPitch)
+				{
 					break;
+				}
 			}
 
 			// Finding Out Pitch using Map 2 from Articulation
-			for (int i = 0; i < sizeof(Map2.data) || Map2.data[i] == 0x00 || i < PRESET_SIZE; i++)
+			for (int i = 0; i < PRESET_SIZE - 1 && Map2.data[i] != 0x00; ++i)
 			{
 				if (Map2.data[i] <= 0x8000) continue;
 				if (artic != (Map2.data[i] & 0x0fff)) continue;
@@ -347,8 +372,7 @@ namespace MinMax
 
 			auto preset = reinterpret_cast<const Preset*>(msgData);
 
-			std::thread th(setPreset, preset, &Map1, &Map2);
-			th.join();
+			setPreset(preset, &Map1, &Map2);
 		}
 
 		NeedReset = true;

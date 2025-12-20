@@ -5,7 +5,7 @@
 #include <filesystem>
 #include <codecvt>
 #include <sstream>
-#include <thread>
+//#include <thread>
 #include <fstream>
 #include <pluginterfaces/vst/ivstparameterchanges.h>
 
