@@ -1,0 +1,89 @@
+#pragma once
+
+#include <codecvt>
+#include <filesystem>
+#include <fstream>
+#include <sstream>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+
+#include <base/source/fstreamer.h>
+#include <base/source/fstring.h>
+
+#include "public.sdk/source/vst/vstaudioeffect.h"
+#include "public.sdk/source/vst/vstaudioprocessoralgo.h"
+#include "public.sdk/source/vst/vsteventshelper.h"
+
+#include "pluginterfaces/base/ibstream.h"
+#include "pluginterfaces/vst/ivstevents.h"
+#include "pluginterfaces/vst/ivstparameterchanges.h"
+#include "pluginterfaces/vst/ivstmidicontrollers.h"
+
+#include "vstgui/vstgui_uidescription.h"
+#include "vstgui/plugin-bindings/vst3editor.h"
+#include "vstgui/uidescription/detail/uiviewcreatorattributes.h"
+
+namespace MinMax
+{
+	using namespace VSTGUI;
+
+	using namespace Steinberg;
+	using namespace Steinberg::Vst;
+
+	namespace fs = std::filesystem;
+
+	using String = Steinberg::String;
+	using Event = Steinberg::Vst::Event;
+
+	inline constexpr int16 COUNT_NOTE = 128;
+	inline constexpr int16 OFF_NOTE = -1;
+	inline constexpr int16 PRESET_SIZE = 900;
+
+	typedef char PRESETNAME[128];
+
+	enum PARAM_ID
+	{
+		BYPASS = 1,
+		TRANSLATE = 1001,
+	};
+
+	inline constexpr auto MsgPreset = "Preset";
+
+	struct Preset
+	{
+		int16 Map{};
+		PRESETNAME Name{};
+		uint16 data[PRESET_SIZE];
+	};
+
+	class Semaphore
+	{
+	public:
+		Semaphore(int count = 0) : count(count) {}
+
+		void notify() {
+			std::unique_lock<std::mutex> lock(mtx);
+			++count;
+			cv.notify_one();
+		}
+
+		void wait() {
+			std::unique_lock<std::mutex> lock(mtx);
+			while (count == 0) {
+				cv.wait(lock);
+			}
+			--count;
+		}
+
+	private:
+		std::mutex mtx;
+		std::condition_variable cv;
+		int count;
+	};
+
+	__declspec(selectany) Semaphore sem(1);
+
+	__declspec(selectany) Preset PSET1 {};
+	__declspec(selectany) Preset PSET2 {};
+}
