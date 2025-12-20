@@ -5,14 +5,20 @@
 #include <filesystem>
 #include <codecvt>
 #include <sstream>
-//#include <thread>
 #include <fstream>
 #include <pluginterfaces/vst/ivstparameterchanges.h>
+#include <vstgui/vstgui_uidescription.h>
+#include <vstgui/plugin-bindings/vst3editor.h>
+#include <vstgui/uidescription/detail/uiviewcreatorattributes.h>
 
 #include "plugdefine.h"
 
 namespace MinMax
 {
+    using namespace VSTGUI;
+
+    namespace fs = std::filesystem;
+
     const struct Files
     {
         inline static const char* STR_USERPROFILE = "USERPROFILE";

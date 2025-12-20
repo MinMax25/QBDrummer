@@ -1,24 +1,14 @@
 #pragma once
 
-#include <filesystem>
 #include <mutex>
 #include <condition_variable>
-
 #include <base/source/fstring.h>
 #include <pluginterfaces/vst/ivstevents.h>
 
-#include <vstgui/vstgui_uidescription.h>
-#include <vstgui/plugin-bindings/vst3editor.h>
-#include <vstgui/uidescription/detail/uiviewcreatorattributes.h>
-
 namespace MinMax
 {
-	using namespace VSTGUI;
-
 	using namespace Steinberg;
 	using namespace Steinberg::Vst;
-
-	namespace fs = std::filesystem;
 
 	using String = Steinberg::String;
 	using Event = Steinberg::Vst::Event;

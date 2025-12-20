@@ -4,10 +4,16 @@
 
 #pragma once
 
+#include <vstgui/vstgui_uidescription.h>
+#include <vstgui/plugin-bindings/vst3editor.h>
+#include <vstgui/uidescription/detail/uiviewcreatorattributes.h>
+
 #include "plugdefine.h"
 
 namespace MinMax
 {
+	using namespace VSTGUI;
+
 	class MyVSTController
 		: public Steinberg::Vst::EditControllerEx1
 		, public VST3EditorDelegate

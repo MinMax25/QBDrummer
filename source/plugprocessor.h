@@ -5,7 +5,6 @@
 #pragma once
 
 #include <public.sdk/source/vst/vstaudioeffect.h>
-#include <pluginterfaces/vst/ivstparameterchanges.h>
 
 #include "plugdefine.h"
 

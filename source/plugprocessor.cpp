@@ -5,6 +5,7 @@
 #include <base/source/fstreamer.h>
 #include <pluginterfaces/base/ibstream.h>
 #include <pluginterfaces/vst/ivstmidicontrollers.h>
+#include <pluginterfaces/vst/ivstparameterchanges.h>
 
 #include "plugcids.h"
 #include "plugprocessor.h"

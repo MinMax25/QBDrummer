@@ -10,6 +10,8 @@
 
 namespace MinMax
 {
+	using namespace VSTGUI;
+
 	tresult PLUGIN_API MyVSTController::initialize(FUnknown* context)
 	{
 		tresult result = EditControllerEx1::initialize(context);
