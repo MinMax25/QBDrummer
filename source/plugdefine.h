@@ -1,28 +1,15 @@
 #pragma once
 
-#include <codecvt>
 #include <filesystem>
-#include <fstream>
-#include <sstream>
-#include <thread>
 #include <mutex>
 #include <condition_variable>
 
-#include <base/source/fstreamer.h>
 #include <base/source/fstring.h>
+#include <pluginterfaces/vst/ivstevents.h>
 
-#include "public.sdk/source/vst/vstaudioeffect.h"
-#include "public.sdk/source/vst/vstaudioprocessoralgo.h"
-#include "public.sdk/source/vst/vsteventshelper.h"
-
-#include "pluginterfaces/base/ibstream.h"
-#include "pluginterfaces/vst/ivstevents.h"
-#include "pluginterfaces/vst/ivstparameterchanges.h"
-#include "pluginterfaces/vst/ivstmidicontrollers.h"
-
-#include "vstgui/vstgui_uidescription.h"
-#include "vstgui/plugin-bindings/vst3editor.h"
-#include "vstgui/uidescription/detail/uiviewcreatorattributes.h"
+#include <vstgui/vstgui_uidescription.h>
+#include <vstgui/plugin-bindings/vst3editor.h>
+#include <vstgui/uidescription/detail/uiviewcreatorattributes.h>
 
 namespace MinMax
 {

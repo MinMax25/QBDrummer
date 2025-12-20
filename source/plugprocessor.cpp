@@ -2,6 +2,10 @@
 // Copyright(c) 2024 MinMax.
 //------------------------------------------------------------------------
 
+#include <base/source/fstreamer.h>
+#include <pluginterfaces/base/ibstream.h>
+#include <pluginterfaces/vst/ivstmidicontrollers.h>
+
 #include "plugcids.h"
 #include "plugprocessor.h"
 

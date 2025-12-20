@@ -2,8 +2,14 @@
 // Copyright(c) 2024 MinMax.
 //------------------------------------------------------------------------
 
+#include <filesystem>
+#include <codecvt>
+#include <sstream>
+#include <thread>
+#include <fstream>
+#include <pluginterfaces/vst/ivstparameterchanges.h>
+
 #include "plugdefine.h"
-#include "plugcontroller.h"
 
 namespace MinMax
 {

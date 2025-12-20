@@ -3,9 +3,10 @@
 //------------------------------------------------------------------------
 
 #include <fstream>
+#include <pluginterfaces/base/ibstream.h>
+#include <base/source/fstreamer.h>
 
 #include "plugcontroller.h"
-#include "plugcids.h"
 
 namespace MinMax
 {
