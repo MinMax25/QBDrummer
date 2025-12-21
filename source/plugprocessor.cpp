@@ -62,6 +62,8 @@ namespace MinMax
 
 		setAllPreset(&Map1, &Map2);
 
+		rebuildNoteTable();
+
 		return kResultOk;
 	}
 
@@ -198,7 +200,12 @@ namespace MinMax
 		else if (tag == PARAM_ID::TRANSLATE)
 		{
 			NeedReset = true;
-			Translate = (value > 0.5f);
+			bool newValue = (value > 0.5f);
+			if (Translate != newValue)
+			{
+				Translate = newValue;
+				rebuildNoteTable();
+			}
 		}
 	}
 
@@ -271,50 +278,60 @@ namespace MinMax
 		}
 	}
 
-	int16 PLUGIN_API MyVSTProcessor::getOutPitch(int16 inPitch)
+	//int16 PLUGIN_API MyVSTProcessor::getOutPitch(int16 inPitch)
+	//{
+	//	uint16 artic{};
+	//	int16 outPitch = OFF_NOTE;
+	//	bool skip = false;
+
+	//	if (!Translate)
+	//	{
+	//		// Through when the Translate is off
+	//		outPitch = inPitch;
+	//	}
+	//	else
+	//	{
+	//		// Finding Articulation using Map 1 from In Pitch
+	//		for (int i = 0; i < PRESET_SIZE && Map1.data[i] != 0x00; ++i)
+	//		{
+	//			if (Map1.data[i] > 0xc000)
+	//			{
+	//				skip = true;
+	//				continue;
+	//			}
+	//			else if (Map1.data[i] > 0x8000)
+	//			{
+	//				skip = false;
+	//				artic = Map1.data[i] & 0x0fff;
+	//			}
+	//			else  if (!skip && (Map1.data[i] & 0x7f) == inPitch)
+	//			{
+	//				break;
+	//			}
+	//		}
+
+	//		// Finding Out Pitch using Map 2 from Articulation
+	//		for (int i = 0; i < PRESET_SIZE - 1 && Map2.data[i] != 0x00; ++i)
+	//		{
+	//			if (Map2.data[i] <= 0x8000) continue;
+	//			if (artic != (Map2.data[i] & 0x0fff)) continue;
+	//			if (Map2.data[i + 1] > 0x8000) continue;
+	//			outPitch = Map2.data[i + 1] & 0x7f;
+	//			break;
+	//		}
+	//	}
+
+	//	return outPitch;
+	//}
+	int16 MyVSTProcessor::getOutPitch(int16 inPitch)
 	{
-		uint16 artic{};
-		int16 outPitch = OFF_NOTE;
-		bool skip = false;
-
 		if (!Translate)
-		{
-			// Through when the Translate is off
-			outPitch = inPitch;
-		}
-		else
-		{
-			// Finding Articulation using Map 1 from In Pitch
-			for (int i = 0; i < PRESET_SIZE && Map1.data[i] != 0x00; ++i)
-			{
-				if (Map1.data[i] > 0xc000)
-				{
-					skip = true;
-					continue;
-				}
-				else if (Map1.data[i] > 0x8000)
-				{
-					skip = false;
-					artic = Map1.data[i] & 0x0fff;
-				}
-				else  if (!skip && (Map1.data[i] & 0x7f) == inPitch)
-				{
-					break;
-				}
-			}
+			return inPitch;
 
-			// Finding Out Pitch using Map 2 from Articulation
-			for (int i = 0; i < PRESET_SIZE - 1 && Map2.data[i] != 0x00; ++i)
-			{
-				if (Map2.data[i] <= 0x8000) continue;
-				if (artic != (Map2.data[i] & 0x0fff)) continue;
-				if (Map2.data[i + 1] > 0x8000) continue;
-				outPitch = Map2.data[i + 1] & 0x7f;
-				break;
-			}
-		}
+		if (inPitch < 0 || inPitch >= 128)
+			return OFF_NOTE;
 
-		return outPitch;
+		return noteTable[inPitch];
 	}
 
 #pragma endregion
@@ -361,6 +378,8 @@ namespace MinMax
 
 #pragma endregion
 
+#pragma region ユーティリティ等
+
 	tresult PLUGIN_API MyVSTProcessor::notify(IMessage* message)
 	{
 		auto msgID = message->getMessageID();
@@ -382,6 +401,63 @@ namespace MinMax
 
 		NeedReset = true;
 
+		rebuildNoteTable();
+
 		return kResultFalse;
 	}
+
+	void MyVSTProcessor::rebuildNoteTable()
+	{
+		std::fill(std::begin(noteTable), std::end(noteTable), OFF_NOTE);
+
+		// Map1: inPitch -> articulation
+		int16 in2artic[128];
+		std::fill(std::begin(in2artic), std::end(in2artic), OFF_NOTE);
+
+		bool skip = false;
+		uint16 artic = 0;
+
+		for (int i = 0; i < PRESET_SIZE && Map1.data[i] != 0x00; ++i)
+		{
+			uint16 v = Map1.data[i];
+
+			if (v > 0xc000)
+			{
+				skip = true;
+			}
+			else if (v > 0x8000)
+			{
+				skip = false;
+				artic = v & 0x0fff;
+			}
+			else if (!skip)
+			{
+				int16 inPitch = v & 0x7f;
+				if (inPitch < 128)
+					in2artic[inPitch] = artic;
+			}
+		}
+
+		// Map2: articulation -> outPitch
+		for (int i = 0; i < PRESET_SIZE - 1 && Map2.data[i] != 0x00; ++i)
+		{
+			uint16 v = Map2.data[i];
+			if (v <= 0x8000) continue;
+
+			uint16 a = v & 0x0fff;
+			uint16 next = Map2.data[i + 1];
+
+			if (next <= 0x8000)
+			{
+				int16 outPitch = next & 0x7f;
+				for (int p = 0; p < 128; ++p)
+				{
+					if (in2artic[p] == a)
+						noteTable[p] = outPitch;
+				}
+			}
+		}
+	}
+
+#pragma endregion
 }

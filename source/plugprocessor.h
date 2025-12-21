@@ -45,6 +45,7 @@ namespace MinMax
 		void PLUGIN_API noteOnProc(IEventList& list, Event& event);
 		void PLUGIN_API noteOffProc(IEventList& list, Event& event);
 		int16 PLUGIN_API getOutPitch(int16 inPitch);
+		void rebuildNoteTable();
 
 		static inline void getAllPreset(Preset* pset1, Preset* pset2)
 		{
@@ -66,7 +67,7 @@ namespace MinMax
 			sem.notify();
 		}
 
-		static inline void setPreset(const Preset* pset, Preset* pset1, Preset* pset2)
+		inline void setPreset(const Preset* pset, Preset* pset1, Preset* pset2)
 		{
 			sem.wait();
 
@@ -78,6 +79,8 @@ namespace MinMax
 			memcpy(pset1, &PSET1, sizeof(Preset));
 			memcpy(pset2, &PSET2, sizeof(Preset));
 
+			rebuildNoteTable();
+
 			sem.notify();
 		}
 
@@ -88,6 +91,9 @@ namespace MinMax
 
 		Preset Map1{};
 		Preset Map2{};
+
+		int16 noteTable[128];
+
 		// -----------
 	};
 }
