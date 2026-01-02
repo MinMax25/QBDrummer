@@ -4,11 +4,7 @@
 
 #pragma once
 
-#include <vstgui/vstgui_uidescription.h>
 #include <vstgui/plugin-bindings/vst3editor.h>
-#include <vstgui/uidescription/detail/uiviewcreatorattributes.h>
-
-#include "plugdefine.h"
 
 namespace MinMax
 {

@@ -3,10 +3,12 @@
 //------------------------------------------------------------------------
 
 #include <fstream>
-#include <pluginterfaces/base/ibstream.h>
 #include <base/source/fstreamer.h>
+#include <pluginterfaces/base/ibstream.h>
+#include <vstgui/plugin-bindings/vst3editor.h>
 
 #include "plugcontroller.h"
+#include "plugdefine.h"
 
 namespace MinMax
 {
