@@ -2,6 +2,8 @@
 // Copyright(c) 2024 MinMax.
 //------------------------------------------------------------------------
 
+#pragma warning(disable : 4996)
+
 #include <filesystem>
 #include <codecvt>
 #include <sstream>
@@ -119,7 +121,6 @@ namespace MinMax
             : CViewContainer(size)
         {
             editor = static_cast<VST3Editor*>(description->getController());
-            editor->addRef();
 
             map = std::stoi(attributes.getAttributeValue("custom-view-name")->c_str());
 
@@ -145,7 +146,6 @@ namespace MinMax
 
         ~CPresetSelector()
         {
-            optTarget = nullptr;
         }
 
         CLASS_METHODS(CPresetSelector, CViewContainer)
