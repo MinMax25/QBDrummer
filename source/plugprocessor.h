@@ -92,7 +92,7 @@ namespace MinMax
 		Preset Map1{};
 		Preset Map2{};
 
-		int16 noteTable[128];
+		int16 noteTable[COUNT_NOTE];
 
 		// -----------
 	};
