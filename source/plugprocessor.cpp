@@ -278,51 +278,6 @@ namespace MinMax
 		}
 	}
 
-	//int16 PLUGIN_API MyVSTProcessor::getOutPitch(int16 inPitch)
-	//{
-	//	uint16 artic{};
-	//	int16 outPitch = OFF_NOTE;
-	//	bool skip = false;
-
-	//	if (!Translate)
-	//	{
-	//		// Through when the Translate is off
-	//		outPitch = inPitch;
-	//	}
-	//	else
-	//	{
-	//		// Finding Articulation using Map 1 from In Pitch
-	//		for (int i = 0; i < PRESET_SIZE && Map1.data[i] != 0x00; ++i)
-	//		{
-	//			if (Map1.data[i] > 0xc000)
-	//			{
-	//				skip = true;
-	//				continue;
-	//			}
-	//			else if (Map1.data[i] > 0x8000)
-	//			{
-	//				skip = false;
-	//				artic = Map1.data[i] & 0x0fff;
-	//			}
-	//			else  if (!skip && (Map1.data[i] & 0x7f) == inPitch)
-	//			{
-	//				break;
-	//			}
-	//		}
-
-	//		// Finding Out Pitch using Map 2 from Articulation
-	//		for (int i = 0; i < PRESET_SIZE - 1 && Map2.data[i] != 0x00; ++i)
-	//		{
-	//			if (Map2.data[i] <= 0x8000) continue;
-	//			if (artic != (Map2.data[i] & 0x0fff)) continue;
-	//			if (Map2.data[i + 1] > 0x8000) continue;
-	//			outPitch = Map2.data[i + 1] & 0x7f;
-	//			break;
-	//		}
-	//	}
-
-	//	return outPitch;
-	//}
 	int16 MyVSTProcessor::getOutPitch(int16 inPitch)
 	{
 		if (!Translate)
