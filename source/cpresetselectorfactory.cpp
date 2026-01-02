@@ -23,8 +23,6 @@ namespace MinMax
     {
         inline static const char* STR_USERPROFILE = "USERPROFILE";
         inline static const char* PRESET_ROOT = "Documents/VST3 Presets/MinMax/QB Drummer/Maps";
-        inline static const UTF8String TITLE = "QB Drummer";
-        inline static const UTF8String FILTER = "QB Drummer(.csv)";
         inline static const UTF8String FILE_EXT = "csv";
 
         inline static fs::path getPresetPath()
