@@ -13,6 +13,8 @@ namespace MinMax
 	using String = Steinberg::String;
 	using Event = Steinberg::Vst::Event;
 
+	inline constexpr auto MsgPreset = "Preset";
+
 	inline constexpr int16 COUNT_NOTE = 128;
 	inline constexpr int16 OFF_NOTE = -1;
 	inline constexpr int16 PRESET_SIZE = 900;
@@ -24,8 +26,6 @@ namespace MinMax
 		BYPASS = 1,
 		TRANSLATE = 1001,
 	};
-
-	inline constexpr auto MsgPreset = "Preset";
 
 	struct Preset
 	{
