@@ -24,7 +24,7 @@ namespace MinMax
     const struct Files
     {
         inline static const char* STR_USERPROFILE = "USERPROFILE";
-        inline static const char* PRESET_ROOT = "Documents/VST3 Presets/MinMax/QB Drummer/Maps";
+        inline static const char* PRESET_ROOT = "Documents/VST3 Presets/MinMax/QBDrummer/Maps";
         inline static const UTF8String FILE_EXT = "csv";
 
         inline static fs::path getPresetPath()
