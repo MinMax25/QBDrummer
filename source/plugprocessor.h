@@ -4,6 +4,14 @@
 
 #pragma once
 
+#include <pluginterfaces/base/fplatform.h>
+#include <pluginterfaces/base/ftypes.h>
+#include <pluginterfaces/base/funknown.h>
+#include <pluginterfaces/vst/ivstaudioprocessor.h>
+#include <pluginterfaces/vst/ivstcomponent.h>
+#include <pluginterfaces/vst/ivstevents.h>
+#include <pluginterfaces/vst/ivstmessage.h>
+#include <pluginterfaces/vst/vsttypes.h>
 #include <public.sdk/source/vst/vstaudioeffect.h>
 
 #include "plugdefine.h"

@@ -4,6 +4,13 @@
 
 #pragma once
 
+#include <base/source/fobject.h>
+#include <pluginterfaces/base/fplatform.h>
+#include <pluginterfaces/base/ftypes.h>
+#include <pluginterfaces/base/funknown.h>
+#include <pluginterfaces/gui/iplugview.h>
+#include <pluginterfaces/vst/ivsteditcontroller.h>
+#include <public.sdk/source/vst/vsteditcontroller.h>
 #include <vstgui/plugin-bindings/vst3editor.h>
 
 namespace MinMax
