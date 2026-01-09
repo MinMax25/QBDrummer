@@ -2,9 +2,16 @@
 // Copyright(c) 2024 MinMax.
 //------------------------------------------------------------------------
 
-#include <fstream>
 #include <base/source/fstreamer.h>
+#include <pluginterfaces/base/fplatform.h>
+#include <pluginterfaces/base/fstrdefs.h>
+#include <pluginterfaces/base/ftypes.h>
+#include <pluginterfaces/base/funknown.h>
 #include <pluginterfaces/base/ibstream.h>
+#include <pluginterfaces/gui/iplugview.h>
+#include <pluginterfaces/vst/ivsteditcontroller.h>
+#include <public.sdk/source/vst/vsteditcontroller.h>
+#include <public.sdk/source/vst/vstparameters.h>
 #include <vstgui/plugin-bindings/vst3editor.h>
 
 #include "plugcontroller.h"

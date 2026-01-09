@@ -2,12 +2,26 @@
 // Copyright(c) 2024 MinMax.
 //------------------------------------------------------------------------
 
+#include <algorithm>
 #include <base/source/fstreamer.h>
+#include <iterator>
+#include <pluginterfaces/base/fplatform.h>
+#include <pluginterfaces/base/fstrdefs.h>
+#include <pluginterfaces/base/ftypes.h>
+#include <pluginterfaces/base/funknown.h>
 #include <pluginterfaces/base/ibstream.h>
+#include <pluginterfaces/vst/ivstaudioprocessor.h>
+#include <pluginterfaces/vst/ivstevents.h>
+#include <pluginterfaces/vst/ivstmessage.h>
 #include <pluginterfaces/vst/ivstmidicontrollers.h>
 #include <pluginterfaces/vst/ivstparameterchanges.h>
+#include <pluginterfaces/vst/vstspeaker.h>
+#include <pluginterfaces/vst/vsttypes.h>
+#include <public.sdk/source/vst/vstaudioeffect.h>
+#include <string.h>
 
 #include "plugcids.h"
+#include "plugdefine.h"
 #include "plugprocessor.h"
 
 namespace MinMax
