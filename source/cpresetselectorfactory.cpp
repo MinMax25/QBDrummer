@@ -18,23 +18,19 @@
 
 namespace MinMax
 {
-    using namespace VSTGUI;
-
-    namespace fs = std::filesystem;
-
     class CPresetSelector
-        : public CViewContainer
+        : public VSTGUI::CViewContainer
     {
     public:
-        CPresetSelector(const UIAttributes& attributes, const IUIDescription* description, const CRect& size)
+        CPresetSelector(const VSTGUI::UIAttributes& attributes, const VSTGUI::IUIDescription* description, const VSTGUI::CRect& size)
             : CViewContainer(size)
         {
-            editor = static_cast<VST3Editor*>(description->getController());
+            editor = static_cast<VSTGUI::VST3Editor*>(description->getController());
 
             map = std::stoi(attributes.getAttributeValue("custom-view-name")->c_str());
 
-            setBackgroundColor(kTransparentCColor);
-            setViewSize(CRect(0, 0, 420, 20));
+            setBackgroundColor(VSTGUI::kTransparentCColor);
+            setViewSize(VSTGUI::CRect(0, 0, 420, 20));
 
             PRESETNAME pname{};
             std::thread th(getPresetName, map, pname);
@@ -42,14 +38,14 @@ namespace MinMax
 
             optTarget =
                 new CPresetSelectMenu(
-                    [this](CControl* pControl) { onPresetSelectChanged(pControl); },
+                    [this](VSTGUI::CControl* pControl) { onPresetSelectChanged(pControl); },
                     pname,
-                    CRect(CPoint(0, 0), CPoint(360, 20)),
+                    VSTGUI::CRect(VSTGUI::CPoint(0, 0), VSTGUI::CPoint(360, 20)),
                     description->getController(),
                     -1
                 );
-            optTarget->setBackColor(kWhiteCColor);
-            optTarget->setFontColor(kBlackCColor);
+            optTarget->setBackColor(VSTGUI::kWhiteCColor);
+            optTarget->setFontColor(VSTGUI::kBlackCColor);
             addView(optTarget);
         }
 
@@ -60,13 +56,13 @@ namespace MinMax
         CLASS_METHODS(CPresetSelector, CViewContainer)
 
     protected:
-        VST3Editor* editor{};
+        VSTGUI::VST3Editor* editor{};
 
         int16 map = 0;
 
         CPresetSelectMenu* optTarget = nullptr;
 
-        UTF8StringPtr filename = nullptr;
+        VSTGUI::UTF8StringPtr filename = nullptr;
 
         static inline std::wstring convertUtf8ToUtf16(char const* str)
         {
@@ -86,11 +82,11 @@ namespace MinMax
             sem.notify();
         }
 
-        void onPresetSelectChanged(CControl* pControl)
+        void onPresetSelectChanged(VSTGUI::CControl* pControl)
         {
-            auto* top = static_cast<COptionMenu*>(pControl);
+            auto* top = static_cast<VSTGUI::COptionMenu*>(pControl);
 
-            UTF8String fullPath;
+            VSTGUI::UTF8String fullPath;
 
             int32_t idx = -1;
             if (auto* menu = top->getLastItemMenu(idx))
@@ -103,10 +99,9 @@ namespace MinMax
             
             if (fullPath.empty()) return;
 
-            fs::path fp = fs::path(fullPath.getString());
+            std::filesystem::path fp = std::filesystem::path(fullPath.getString());
 
-            //auto& name = optTarget->getEntry(optTarget->getCurrentIndex())->getTitle();
-            auto& name = UTF8String(fp.stem().u8string());
+            auto& name = VSTGUI::UTF8String(fp.stem().u8string());
 
             Preset preset{};
             preset.Map = map;
@@ -116,7 +111,7 @@ namespace MinMax
 
             if (optTarget->getCurrentIndex() > 0)
             {
-                fs::path path = Files::getPresetPath().append(convertUtf8ToUtf16(name)).replace_extension(Files::FILE_EXT.getString());
+                std::filesystem::path path = Files::getPresetPath().append(convertUtf8ToUtf16(name)).replace_extension(Files::FILE_EXT.getString());
                 std::ifstream file(path);
                 std::string line;
 
@@ -174,19 +169,19 @@ namespace MinMax
     };
 
     class CPresetSelectorFactory
-        : public ViewCreatorAdapter
+        : public VSTGUI::ViewCreatorAdapter
     {
     public:
 
-        CPresetSelectorFactory() { UIViewFactory::registerViewCreator(*this); }
+        CPresetSelectorFactory() { VSTGUI::UIViewFactory::registerViewCreator(*this); }
 
-        IdStringPtr getViewName() const override { return "UI:Preset"; }
+        VSTGUI::IdStringPtr getViewName() const override { return "UI:Preset"; }
 
-        IdStringPtr getBaseViewName() const override { return UIViewCreator::kCViewContainer; }
+        VSTGUI::IdStringPtr getBaseViewName() const override { return VSTGUI::UIViewCreator::kCViewContainer; }
 
-        CView* create(const UIAttributes& attributes, const IUIDescription* description) const override
+        VSTGUI::CView* create(const VSTGUI::UIAttributes& attributes, const VSTGUI::IUIDescription* description) const override
         {
-            return new CPresetSelector(attributes, description, CRect(0, 0, 100, 100));
+            return new CPresetSelector(attributes, description, VSTGUI::CRect(0, 0, 100, 100));
         }
     };
 
