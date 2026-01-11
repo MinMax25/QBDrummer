@@ -78,9 +78,13 @@ namespace MinMax
 			sem.wait();
 
 			if (pset->Map == 1)
+			{
 				memcpy(&PSET1, pset, sizeof(Preset));
+			}
 			else if (pset->Map == 2)
+			{
 				memcpy(&PSET2, pset, sizeof(Preset));
+			}
 
 			memcpy(pset1, &PSET1, sizeof(Preset));
 			memcpy(pset2, &PSET2, sizeof(Preset));
