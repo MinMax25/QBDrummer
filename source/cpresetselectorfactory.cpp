@@ -15,6 +15,7 @@
 #include "plugdefine.h"
 #include "files.h"
 #include "cpresetselectmenu.h"
+#include "cmenubutton.h"
 
 namespace MinMax
 {
@@ -36,17 +37,20 @@ namespace MinMax
             std::thread th(getPresetName, map, pname);
             th.join();
 
-            optTarget =
-                new CPresetSelectMenu(
-                    [this](VSTGUI::CControl* pControl) { onPresetSelectChanged(pControl); },
-                    pname,
-                    VSTGUI::CRect(VSTGUI::CPoint(0, 0), VSTGUI::CPoint(360, 20)),
-                    description->getController(),
-                    -1
-                );
-            optTarget->setBackColor(VSTGUI::kWhiteCColor);
-            optTarget->setFontColor(VSTGUI::kBlackCColor);
-            addView(optTarget);
+            menubutton = new CMenuButton(VSTGUI::CRect(VSTGUI::CPoint(0, 0), VSTGUI::CPoint(360, 20)), pname, nullptr);
+            addView(menubutton);
+
+            //optTarget =
+            //    new CPresetSelectMenu(
+            //        [this](VSTGUI::CControl* pControl) { onPresetSelectChanged(pControl); },
+            //        pname,
+            //        VSTGUI::CRect(VSTGUI::CPoint(0, 0), VSTGUI::CPoint(360, 20)),
+            //        description->getController(),
+            //        -1
+            //    );
+            //optTarget->setBackColor(VSTGUI::kWhiteCColor);
+            //optTarget->setFontColor(VSTGUI::kBlackCColor);
+            //addView(optTarget);
         }
 
         ~CPresetSelector()
@@ -59,6 +63,8 @@ namespace MinMax
         VSTGUI::VST3Editor* editor{};
 
         int16 map = 0;
+
+        CMenuButton* menubutton = nullptr;
 
         CPresetSelectMenu* optTarget = nullptr;
 

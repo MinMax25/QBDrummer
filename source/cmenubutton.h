@@ -22,18 +22,15 @@ namespace MinMax
         : public VSTGUI::CTextButton
     {
     public:
-        using SelectedChordChanged = std::function<void(CMenuButton*)>;
+        using valueChangedCallBack = std::function<void(CMenuButton*)>;
 
         const VSTGUI::CColor NORMAL_TEXT_COLOR = VSTGUI::kGreyCColor;
         const VSTGUI::CColor EDIT_TEXT_COLOR = VSTGUI::kCyanCColor;
 
-        CMenuButton(const VSTGUI::CRect& size, const VSTGUI::UTF8String& title, SelectedChordChanged cb)
+        CMenuButton(const VSTGUI::CRect& size, const VSTGUI::UTF8String& title, valueChangedCallBack cb)
             : VSTGUI::CTextButton(size, nullptr, -1, title)
-            , selectedChordChanged(cb)
+            , onValueChanged(cb)
         {
-            setGradient(nullptr);
-            setTextColor(NORMAL_TEXT_COLOR);
-            setFont(VSTGUI::kNormalFontSmall);
         }
 
         VSTGUI::CMouseEventResult onMouseEntered(VSTGUI::CPoint& where, const VSTGUI::CButtonState& buttons) override
@@ -64,11 +61,12 @@ namespace MinMax
         void valueChanged() override
         {
             if (getValue()) return;
-            if (selectedChordChanged) selectedChordChanged(this);
+            if (onValueChanged) onValueChanged(this);
         }
 
     private:
         bool mouseInside{ false };
-        SelectedChordChanged selectedChordChanged;
+
+        valueChangedCallBack onValueChanged;
     };
 }
