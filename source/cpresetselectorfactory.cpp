@@ -1,7 +1,6 @@
 //------------------------------------------------------------------------
 // Copyright(c) 2024 MinMax.
 //------------------------------------------------------------------------
-
 #pragma warning(disable : 4996)
 
 #include <filesystem>
@@ -14,104 +13,14 @@
 #include <vstgui/uidescription/detail/uiviewcreatorattributes.h>
 
 #include "plugdefine.h"
+#include "files.h"
+#include "cpresetselectmenu.h"
 
 namespace MinMax
 {
     using namespace VSTGUI;
 
     namespace fs = std::filesystem;
-
-    const struct Files
-    {
-        inline static const char* STR_USERPROFILE = "USERPROFILE";
-        inline static const char* PRESET_ROOT = "Documents/VST3 Presets/MinMax/QBDrummer/Maps";
-        inline static const UTF8String FILE_EXT = "csv";
-
-        inline static fs::path getPresetPath()
-        {
-            return fs::path(getenv(STR_USERPROFILE)).append(PRESET_ROOT).make_preferred();
-        }
-
-        inline static void createPresetDirectory()
-        {
-            std::string p = getPresetPath().string();
-
-            if (!fs::exists(getPresetPath().string()))
-                fs::create_directories(p);
-        }
-
-        inline static tresult getPresetFiles(std::vector<std::string>& file_names)
-        {
-            createPresetDirectory();
-            fs::directory_iterator iter(getPresetPath()), end;
-            std::error_code err;
-
-            for (; iter != end && !err; iter.increment(err))
-            {
-                const fs::directory_entry entry = *iter;
-                if (fs::path(entry.path().string()).extension() != ".csv") continue;
-                file_names.push_back(entry.path().string());
-            }
-
-            return kResultTrue;
-        }
-    };
-
-    class CPresetSelectMenu
-        : public COptionMenu
-    {
-    public:
-        CPresetSelectMenu(
-            std::function<void(CControl*)> _onSelectChanged,
-            PRESETNAME name,
-            const CRect& size, IControlListener* listener, int32_t tag, CBitmap* background = nullptr, CBitmap* bgWhenClick = nullptr, const int32_t style = 0)
-            : COptionMenu(size, listener, tag, background, bgWhenClick, style)
-        {
-            onSelectChanged = _onSelectChanged;
-            setStyle(COptionMenu::kCheckStyle);
-            getPresetList();
-            setCurrentEntry(name);
-        }
-
-        ~CPresetSelectMenu()
-        {
-            onSelectChanged = nullptr;
-        }
-
-        void valueChanged() override
-        {
-            if (onSelectChanged) onSelectChanged(this);
-            COptionMenu::valueChanged();
-        }
-
-        void getPresetList()
-        {
-            removeAllEntry();
-
-            addEntry(u8"Default");
-            setCurrent(0);
-
-            std::vector<std::string> filenames;
-            Files::getPresetFiles(filenames);
-            for (auto& item : filenames) addEntry(fs::path(item).stem().u8string());
-        }
-
-        void setCurrentEntry(PRESETNAME name)
-        {
-            auto presetName = std::string(name);
-            for (int i = 0; i < (int)getItems()->size(); i++)
-            {
-                if (getEntry(i)->getTitle() == presetName)
-                {
-                    setCurrent(i);
-                    break;
-                }
-            }
-        }
-
-    protected:
-        std::function<void(CControl* pControl)> onSelectChanged;
-    };
 
     class CPresetSelector
         : public CViewContainer
@@ -179,7 +88,25 @@ namespace MinMax
 
         void onPresetSelectChanged(CControl* pControl)
         {
-            auto& name = optTarget->getEntry(optTarget->getCurrentIndex())->getTitle();
+            auto* top = static_cast<COptionMenu*>(pControl);
+
+            UTF8String fullPath;
+
+            int32_t idx = -1;
+            if (auto* menu = top->getLastItemMenu(idx))
+            {
+                if (auto* item = menu->getEntry(idx))
+                {
+                    fullPath = item->getKeycode();
+                }
+            }
+            
+            if (fullPath.empty()) return;
+
+            fs::path fp = fs::path(fullPath.getString());
+
+            //auto& name = optTarget->getEntry(optTarget->getCurrentIndex())->getTitle();
+            auto& name = UTF8String(fp.stem().u8string());
 
             Preset preset{};
             preset.Map = map;
