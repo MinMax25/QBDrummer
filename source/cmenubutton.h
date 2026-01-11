@@ -54,7 +54,7 @@ namespace MinMax
         {
             if (mouseInside)
             {
-                ctx->setFillColor(VSTGUI::kGreyCColor);
+                ctx->setFillColor(VSTGUI::kWhiteCColor);
                 ctx->drawRect(getViewSize(), VSTGUI::kDrawFilled);
             }
 
