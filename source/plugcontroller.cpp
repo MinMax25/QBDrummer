@@ -19,8 +19,6 @@
 
 namespace MinMax
 {
-	using namespace VSTGUI;
-
 	tresult PLUGIN_API MyVSTController::initialize(FUnknown* context)
 	{
 		tresult result = EditControllerEx1::initialize(context);
@@ -97,7 +95,7 @@ namespace MinMax
 	{
 		if (FIDStringsEqual(name, Vst::ViewType::kEditor))
 		{
-			auto* view = new VST3Editor(this, "view", "plugeditor.uidesc");
+			auto* view = new VSTGUI::VST3Editor(this, "view", "plugeditor.uidesc");
 			return view;
 		}
 		return nullptr;

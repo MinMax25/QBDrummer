@@ -17,7 +17,6 @@
 
 namespace MinMax
 {
-
 	class MyVSTProcessor 
 		: public Steinberg::Vst::AudioEffect
 	{

@@ -15,11 +15,9 @@
 
 namespace MinMax
 {
-	using namespace VSTGUI;
-
 	class MyVSTController
 		: public Steinberg::Vst::EditControllerEx1
-		, public VST3EditorDelegate
+		, public VSTGUI::VST3EditorDelegate
 	{
 	public:
 
