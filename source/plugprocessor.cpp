@@ -294,11 +294,9 @@ namespace MinMax
 
 	int16 MyVSTProcessor::getOutPitch(int16 inPitch)
 	{
-		if (!Translate)
-			return inPitch;
+		if (!Translate) return inPitch;
 
-		if (inPitch < 0 || inPitch >= 128)
-			return OFF_NOTE;
+		if (inPitch < 0 || inPitch >= 128) return OFF_NOTE;
 
 		return noteTable[inPitch];
 	}
