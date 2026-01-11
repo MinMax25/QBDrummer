@@ -37,7 +37,12 @@ namespace MinMax
             std::thread th(getPresetName, map, pname);
             th.join();
 
-            menubutton = new CMenuButton(VSTGUI::CRect(VSTGUI::CPoint(0, 0), VSTGUI::CPoint(360, 20)), pname, nullptr);
+            menubutton = 
+                new CMenuButton(
+                    VSTGUI::CRect(VSTGUI::CPoint(0, 0), VSTGUI::CPoint(360, 20)),
+                    pname,
+                    [this](VSTGUI::CControl* pControl) { onPressedMenuButton(pControl); }
+                );
             addView(menubutton);
 
             //optTarget =
@@ -86,6 +91,11 @@ namespace MinMax
                 strcpy(pname, PSET2.Name);
 
             sem.notify();
+        }
+
+        void onPressedMenuButton(VSTGUI::CControl* pControl)
+        {
+
         }
 
         void onPresetSelectChanged(VSTGUI::CControl* pControl)
