@@ -403,7 +403,9 @@ namespace MinMax
 			{
 				int16 inPitch = v & 0x7f;
 				if (inPitch < 128)
+				{
 					in2artic[inPitch] = artic;
+				}
 			}
 		}
 
@@ -422,7 +424,9 @@ namespace MinMax
 				for (int p = 0; p < 128; ++p)
 				{
 					if (in2artic[p] == a)
+					{
 						noteTable[p] = outPitch;
+					}
 				}
 			}
 		}
