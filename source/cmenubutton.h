@@ -52,14 +52,12 @@ namespace MinMax
 
         void draw(VSTGUI::CDrawContext* ctx) override
         {
-            // hover 背景
             if (mouseInside)
             {
                 ctx->setFillColor(VSTGUI::kGreyCColor);
                 ctx->drawRect(getViewSize(), VSTGUI::kDrawFilled);
             }
 
-            // テキスト描画（親クラス任せ）
             VSTGUI::CTextButton::draw(ctx);
         }
 
