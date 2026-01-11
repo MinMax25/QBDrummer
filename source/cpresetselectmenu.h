@@ -18,22 +18,18 @@
 
 namespace MinMax
 {
-    using namespace VSTGUI;
-
-    namespace fs = std::filesystem;
-
     class CPresetSelectMenu
-        : public COptionMenu
+        : public VSTGUI::COptionMenu
     {
     public:
         CPresetSelectMenu(
-            std::function<void(CControl*)> _onSelectChanged,
+            std::function<void(VSTGUI::CControl*)> _onSelectChanged,
             PRESETNAME name,
-            const CRect& size, IControlListener* listener, int32_t tag, CBitmap* background = nullptr, CBitmap* bgWhenClick = nullptr, const int32_t style = 0)
+            const VSTGUI::CRect& size, VSTGUI::IControlListener* listener, int32_t tag, VSTGUI::CBitmap* background = nullptr, VSTGUI::CBitmap* bgWhenClick = nullptr, const int32_t style = 0)
             : COptionMenu(size, listener, tag, background, bgWhenClick, style)
         {
             onSelectChanged = _onSelectChanged;
-            setStyle(COptionMenu::kCheckStyle);
+            setStyle(VSTGUI::COptionMenu::kCheckStyle);
             getPresetList();
             setCurrentEntry(name);
         }
@@ -46,7 +42,7 @@ namespace MinMax
         void valueChanged() override
         {
             if (onSelectChanged) onSelectChanged(this);
-            COptionMenu::valueChanged();
+            VSTGUI::COptionMenu::valueChanged();
         }
 
         void getPresetList()
@@ -74,27 +70,27 @@ namespace MinMax
         }
 
     protected:
-        std::function<void(CControl* pControl)> onSelectChanged;
+        std::function<void(VSTGUI::CControl* pControl)> onSelectChanged;
 
-        void addDirectoryToMenu(COptionMenu* menu, const fs::path& dir, const fs::path& root)
+        void addDirectoryToMenu(VSTGUI::COptionMenu* menu, const std::filesystem::path& dir, const std::filesystem::path& root)
         {
-            for (auto& entry : fs::directory_iterator(dir))
+            for (auto& entry : std::filesystem::directory_iterator(dir))
             {
                 if (entry.is_directory())
                 {
-                    auto subMenu = new COptionMenu();
-                    subMenu->setStyle(COptionMenu::kCheckStyle);
+                    auto subMenu = new VSTGUI::COptionMenu();
+                    subMenu->setStyle(VSTGUI::COptionMenu::kCheckStyle);
                     addDirectoryToMenu(subMenu, entry.path(), root);
                     menu->addEntry(subMenu, entry.path().filename().u8string());
                     subMenu->forget();
                 }
                 else if (entry.path().extension() == ".csv")
                 {
-                    auto rel = fs::relative(entry.path(), root);
+                    auto rel = std::filesystem::relative(entry.path(), root);
                     auto item = menu->addEntry(entry.path().stem().u8string());
                     item->setTag(0);
-                    item->setKey(fs::path(entry.path()).u8string());
-                    item->setTitle(fs::path(entry.path()).stem().u8string());
+                    item->setKey(std::filesystem::path(entry.path()).u8string());
+                    item->setTitle(std::filesystem::path(entry.path()).stem().u8string());
                 }
             }
         }
