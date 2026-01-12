@@ -20,11 +20,26 @@ namespace MinMax
         : public VSTGUI::COptionMenu
     {
     public:
-        CSelectMenu(const VSTGUI::CRect size)
-            : COptionMenu(size, nullptr, -1)
+        using onClickCallBack = std::function<void(CSelectMenu*, VSTGUI::UTF8String)>;
+
+        CSelectMenu(onClickCallBack cb)
+            : COptionMenu()
+            , onClick(cb)
         {
 
         }
+
+        void valueChanged() override
+        {
+            if (!lastMenu) return;           
+            if (auto value = lastMenu->getCurrent())
+            {
+                if (onClick) onClick(this, value->getKeycode());
+            }
+        }
+
+    protected:
+        onClickCallBack onClick;
     };
 
     // メニュー表示ボタン

@@ -1,22 +1,36 @@
 //------------------------------------------------------------------------
 // Copyright(c) 2024 MinMax.
 //------------------------------------------------------------------------
-#pragma warning(disable : 4996)
-
+#include <cctype>
+#include <cstdlib>
 #include <filesystem>
-#include <codecvt>
-#include <sstream>
 #include <fstream>
-#include <pluginterfaces/vst/ivstparameterchanges.h>
-#include <vstgui/vstgui_uidescription.h>
+#include <pluginterfaces/base/ftypes.h>
+#include <pluginterfaces/base/smartpointer.h>
+#include <sstream>
+#include <string>
+#include <string.h>
+#include <thread>
+#include <vector>
+#include <vstgui/lib/ccolor.h>
+#include <vstgui/lib/controls/ccontrol.h>
+#include <vstgui/lib/controls/coptionmenu.h>
+#include <vstgui/lib/cpoint.h>
+#include <vstgui/lib/crect.h>
+#include <vstgui/lib/cstring.h>
+#include <vstgui/lib/cview.h>
+#include <vstgui/lib/cviewcontainer.h>
+#include <vstgui/lib/vstguibase.h>
 #include <vstgui/plugin-bindings/vst3editor.h>
 #include <vstgui/uidescription/detail/uiviewcreatorattributes.h>
+#include <vstgui/uidescription/iuidescription.h>
+#include <vstgui/uidescription/iviewcreator.h>
+#include <vstgui/uidescription/uiattributes.h>
+#include <vstgui/uidescription/uiviewfactory.h>
 
-#include "plugdefine.h"
-#include "files.h"
 #include "cmenubutton.h"
-
-#include "debug_log.h"
+#include "files.h"
+#include "plugdefine.h"
 
 namespace MinMax
 {
@@ -62,12 +76,6 @@ namespace MinMax
 
         VSTGUI::UTF8StringPtr filename = nullptr;
 
-        static inline std::wstring convertUtf8ToUtf16(char const* str)
-        {
-            std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
-            return converter.from_bytes(str);
-        }
-
         static void getPresetName(int16 map, PRESETNAME pname)
         {
             sem.wait();
@@ -91,9 +99,12 @@ namespace MinMax
             menu->forget();
         }
 
-        VSTGUI::COptionMenu* createOpenPresetMenu()
+        CSelectMenu* createOpenPresetMenu()
         {
-            auto* menu = new VSTGUI::COptionMenu();
+            auto* menu =
+                new CSelectMenu(
+                    [this](VSTGUI::CControl* pControl, VSTGUI::UTF8String path) { onPresetSelectChanged(path); }
+                );
 
             VSTGUI::COptionMenu* dirMenu = nullptr;
             VSTGUI::CMenuItem* dirItem = nullptr;
@@ -109,14 +120,14 @@ namespace MinMax
                         dirMenu->forget();
                     }
                     dirItem = new VSTGUI::CMenuItem(p.path().stem().u8string().c_str());
-                    dirMenu = new VSTGUI::COptionMenu(VSTGUI::CRect(0, 0, 0, 0), nullptr, -1);
+                    dirMenu = new VSTGUI::COptionMenu();
                 }
                 else
                 {
                     if (!dirMenu) continue;
 
                     auto* fileItem = new VSTGUI::CMenuItem(p.path().stem().u8string().c_str(), -1);
-                    fileItem->setKey(p.path().filename().u8string());
+                    fileItem->setKey(p.path().u8string());
                     dirMenu->addEntry(fileItem);
                 }
             }
@@ -131,77 +142,64 @@ namespace MinMax
             return menu;
         }
 
-        //void onPresetSelectChanged(VSTGUI::CControl* pControl)
-        //{
-        //    auto* top = static_cast<VSTGUI::COptionMenu*>(pControl);
+        void onPresetSelectChanged(VSTGUI::UTF8String presetPath)
+        {
+            std::filesystem::path p(presetPath.getString());
+            auto& name = p.stem().string();
 
-        //    VSTGUI::UTF8String fullPath;
+            Preset preset{};
+            preset.Map = map;
+            name.copy(preset.Name, sizeof(preset.Name));
 
-        //    int32_t idx = -1;
-        //    if (auto* menu = top->getLastItemMenu(idx))
-        //    {
-        //        if (auto* item = menu->getEntry(idx))
-        //        {
-        //            fullPath = item->getKeycode();
-        //        }
-        //    }
-        //    
-        //    if (fullPath.empty()) return;
+            int count = 0;
 
-        //    std::filesystem::path fp = std::filesystem::path(fullPath.getString());
+            std::ifstream file(presetPath);
+            std::string line;
 
-        //    auto& name = VSTGUI::UTF8String(fp.stem().u8string());
+            while (std::getline(file, line))
+            {
+                std::vector<std::string> row;
+                split(line, ',', row);
 
-        //    Preset preset{};
-        //    preset.Map = map;
-        //    name.copy(preset.Name, sizeof(preset.Name));
+                if (row.size() == 4 && isNumber(row[0]) && isNumber(row[1]))
+                {
+                    int id = std::atoi(row[0].c_str());
+                    int sb = std::atoi(row[1].c_str());
 
-        //    int count = 0;
+                    if (sb == 0)
+                    {
+                        preset.data[count++] = (id & 0x0fff) | 0x8000;
+                    }
+                    else
+                    {
+                        preset.data[count++] = (id & 0x0fff) | 0xc000;
+                    }
 
-        //    if (optTarget->getCurrentIndex() > 0)
-        //    {
-        //        std::filesystem::path path = Files::getPresetPath().append(convertUtf8ToUtf16(name)).replace_extension(Files::FILE_EXT.getString());
-        //        std::ifstream file(path);
-        //        std::string line;
+                    if (count >= PRESET_SIZE) goto L1000;
 
-        //        while (std::getline(file, line))
-        //        {
-        //            std::vector<std::string> row;
-        //            split(line, ',', row);
+                    std::vector<std::string> pitchs;
+                    split(row[3], '|', pitchs);
 
-        //            if (row.size() == 4 && isNumber(row[0]) && isNumber(row[1]))
-        //            {
-        //                int id = std::atoi(row[0].c_str());
-        //                int sb = std::atoi(row[1].c_str());
+                    for each (auto p in pitchs)
+                    {
+                        if (isNumber(p)) preset.data[count++] = std::atoi(p.c_str());
+                        if (count >= PRESET_SIZE) goto L1000;
+                    }
+                }
+            }
 
-        //                if (sb == 0)
-        //                    preset.data[count++] = (id & 0x0fff) | 0x8000;
-        //                else
-        //                    preset.data[count++] = (id & 0x0fff) | 0xc000;
-
-        //                if (count >= PRESET_SIZE) goto L1000;
-
-        //                std::vector<std::string> pitchs;
-        //                split(row[3], '|', pitchs);
-
-        //                for each (auto p in pitchs)
-        //                {
-        //                    if (isNumber(p)) preset.data[count++] = std::atoi(p.c_str());
-        //                    if (count >= PRESET_SIZE) goto L1000;
-        //                }
-        //            }
-        //        }
-        //    }
-        //L1000:
-        //    if (auto message = Steinberg::owned(editor->getController()->allocateMessage()))
-        //    {
-        //        message->setMessageID(MsgPreset);
-        //        if (auto attr = message->getAttributes())
-        //            attr->setBinary(MsgPreset, &preset, sizeof(Preset));
-        //        if (editor->getController() == nullptr) return;
-        //        editor->getController()->getPeer()->notify(message);
-        //    }
-        //}
+        L1000:
+            if (auto message = Steinberg::owned(editor->getController()->allocateMessage()))
+            {
+                message->setMessageID(MsgPreset);
+                if (auto attr = message->getAttributes())
+                {
+                    attr->setBinary(MsgPreset, &preset, sizeof(Preset));
+                }
+                if (editor->getController() == nullptr) return;
+                editor->getController()->getPeer()->notify(message);
+            }
+        }
 
         template<typename F>
         static void addMenuCommand(VSTGUI::COptionMenu* menu, const VSTGUI::UTF8String& title, F&& cb)
