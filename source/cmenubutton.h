@@ -22,14 +22,14 @@ namespace MinMax
         : public VSTGUI::CTextButton
     {
     public:
-        using valueChangedCallBack = std::function<void(CMenuButton*)>;
+        using onClickCallBack = std::function<void(CMenuButton*)>;
 
         const VSTGUI::CColor NORMAL_TEXT_COLOR = VSTGUI::kGreyCColor;
         const VSTGUI::CColor EDIT_TEXT_COLOR = VSTGUI::kCyanCColor;
 
-        CMenuButton(const VSTGUI::CRect& size, const VSTGUI::UTF8String& title, valueChangedCallBack cb)
+        CMenuButton(const VSTGUI::CRect& size, const VSTGUI::UTF8String& title, onClickCallBack cb)
             : VSTGUI::CTextButton(size, nullptr, -1, title)
-            , onValueChanged(cb)
+            , onClick(cb)
         {
         }
 
@@ -61,12 +61,12 @@ namespace MinMax
         void valueChanged() override
         {
             if (getValue()) return;
-            if (onValueChanged) onValueChanged(this);
+            if (onClick) onClick(this);
         }
 
     private:
         bool mouseInside{ false };
 
-        valueChangedCallBack onValueChanged;
+        onClickCallBack onClick;
     };
 }

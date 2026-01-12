@@ -33,21 +33,5 @@ namespace MinMax
             if (!std::filesystem::exists(getPresetPath().string()))
                 std::filesystem::create_directories(p);
         }
-
-        inline static tresult getPresetFiles(std::vector<std::string>& file_names)
-        {
-            createPresetDirectory();
-            std::filesystem::directory_iterator iter(getPresetPath()), end;
-            std::error_code err;
-
-            for (; iter != end && !err; iter.increment(err))
-            {
-                const std::filesystem::directory_entry entry = *iter;
-                if (std::filesystem::path(entry.path().string()).extension() != ".csv") continue;
-                file_names.push_back(entry.path().string());
-            }
-
-            return kResultTrue;
-        }
     };
 }

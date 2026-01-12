@@ -17,6 +17,8 @@
 #include "cpresetselectmenu.h"
 #include "cmenubutton.h"
 
+#include "debug_log.h"
+
 namespace MinMax
 {
     class CPresetSelector
@@ -41,21 +43,9 @@ namespace MinMax
                 new CMenuButton(
                     VSTGUI::CRect(VSTGUI::CPoint(0, 0), VSTGUI::CPoint(360, 20)),
                     pname,
-                    [this](VSTGUI::CControl* pControl) { onPressedMenuButton(pControl); }
+                    [this](VSTGUI::CControl* pControl) { popupMenu(pControl); }
                 );
             addView(menubutton);
-
-            //optTarget =
-            //    new CPresetSelectMenu(
-            //        [this](VSTGUI::CControl* pControl) { onPresetSelectChanged(pControl); },
-            //        pname,
-            //        VSTGUI::CRect(VSTGUI::CPoint(0, 0), VSTGUI::CPoint(360, 20)),
-            //        description->getController(),
-            //        -1
-            //    );
-            //optTarget->setBackColor(VSTGUI::kWhiteCColor);
-            //optTarget->setFontColor(VSTGUI::kBlackCColor);
-            //addView(optTarget);
         }
 
         ~CPresetSelector()
@@ -93,9 +83,55 @@ namespace MinMax
             sem.notify();
         }
 
-        void onPressedMenuButton(VSTGUI::CControl* pControl)
+        void popupMenu(VSTGUI::CControl* pControl)
         {
+            auto* menu = createOpenPresetMenu();
 
+            VSTGUI::CPoint p(pControl->getViewSize().left, pControl->getViewSize().bottom);
+            pControl->localToFrame(p);
+
+            menu->popup(getFrame(), p);
+            menu->forget();
+        }
+
+        VSTGUI::COptionMenu* createOpenPresetMenu()
+        {
+            auto* menu = new VSTGUI::COptionMenu();
+
+            VSTGUI::COptionMenu* dirMenu = nullptr;
+            VSTGUI::CMenuItem* dirItem = nullptr;
+
+            for (const std::filesystem::directory_entry& p : std::filesystem::recursive_directory_iterator(Files::getPresetPath()))
+            {
+                if (p.is_directory())
+                {
+                    if (dirItem && dirMenu)
+                    {
+                        dirItem->setSubmenu(dirMenu);
+                        menu->addEntry(dirItem);
+                        dirMenu->forget();
+                    }
+                    dirItem = new VSTGUI::CMenuItem(p.path().stem().u8string().c_str());
+                    dirMenu = new VSTGUI::COptionMenu(VSTGUI::CRect(0, 0, 0, 0), nullptr, -1);
+                }
+                else
+                {
+                    if (!dirMenu) continue;
+
+                    auto* fileItem = new VSTGUI::CMenuItem(p.path().stem().u8string().c_str(), -1);
+                    fileItem->setKey(p.path().filename().u8string());
+                    dirMenu->addEntry(fileItem);
+                }
+            }
+
+            if (dirItem && dirMenu)
+            {
+                dirItem->setSubmenu(dirMenu);
+                menu->addEntry(dirItem);
+                dirMenu->forget();
+            }
+
+            return menu;
         }
 
         void onPresetSelectChanged(VSTGUI::CControl* pControl)
@@ -168,6 +204,19 @@ namespace MinMax
                 if (editor->getController() == nullptr) return;
                 editor->getController()->getPeer()->notify(message);
             }
+        }
+
+        template<typename F>
+        static void addMenuCommand(VSTGUI::COptionMenu* menu, const VSTGUI::UTF8String& title, F&& cb)
+        {
+            auto* item = new VSTGUI::CCommandMenuItem(VSTGUI::CCommandMenuItem::Desc(title));
+            item->setActions(std::forward<F>(cb));
+            menu->addEntry(item);
+        }
+ 
+        void showError(const std::string& msg)
+        {
+            //VSTGUI::CAlertBox::show("Error", msg.c_str(), getFrame()); // UI ì‡ï\é¶Ç…ïœçX
         }
 
         void split(std::string const& str, const char delim, std::vector<std::string>& out)
