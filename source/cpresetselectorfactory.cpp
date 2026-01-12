@@ -74,8 +74,6 @@ namespace MinMax
 
         CMenuButton* menubutton = nullptr;
 
-        VSTGUI::UTF8StringPtr filename = nullptr;
-
         static void getPresetName(int16 map, PRESETNAME pname)
         {
             sem.wait();
