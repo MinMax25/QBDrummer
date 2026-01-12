@@ -26,7 +26,6 @@ namespace MinMax
             : COptionMenu()
             , onClick(cb)
         {
-
         }
 
         void valueChanged() override
@@ -56,6 +55,7 @@ namespace MinMax
             : VSTGUI::CTextButton(size, nullptr, -1, title)
             , onClick(cb)
         {
+            setRoundRadius(0);
         }
 
         VSTGUI::CMouseEventResult onMouseEntered(VSTGUI::CPoint& where, const VSTGUI::CButtonState& buttons) override

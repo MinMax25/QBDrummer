@@ -147,6 +147,8 @@ namespace MinMax
             std::filesystem::path p(presetPath.getString());
             auto& name = p.stem().string();
 
+            menubutton->setTitle(name.c_str());
+
             Preset preset{};
             preset.Map = map;
             name.copy(preset.Name, sizeof(preset.Name));
