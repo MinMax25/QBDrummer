@@ -8,7 +8,6 @@
 #include <vstgui/lib/ccolor.h>
 #include <vstgui/lib/cdrawcontext.h>
 #include <vstgui/lib/cdrawdefs.h>
-#include <vstgui/lib/cfont.h>
 #include <vstgui/lib/controls/cbuttons.h>
 #include <vstgui/lib/cpoint.h>
 #include <vstgui/lib/crect.h>
@@ -17,7 +16,18 @@
 
 namespace MinMax
 {
-    // メニュー表示
+    class CSelectMenu
+        : public VSTGUI::COptionMenu
+    {
+    public:
+        CSelectMenu(const VSTGUI::CRect size)
+            : COptionMenu(size, nullptr, -1)
+        {
+
+        }
+    };
+
+    // メニュー表示ボタン
     class CMenuButton
         : public VSTGUI::CTextButton
     {

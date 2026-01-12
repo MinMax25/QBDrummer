@@ -14,7 +14,6 @@
 
 #include "plugdefine.h"
 #include "files.h"
-#include "cpresetselectmenu.h"
 #include "cmenubutton.h"
 
 #include "debug_log.h"
@@ -60,8 +59,6 @@ namespace MinMax
         int16 map = 0;
 
         CMenuButton* menubutton = nullptr;
-
-        CPresetSelectMenu* optTarget = nullptr;
 
         VSTGUI::UTF8StringPtr filename = nullptr;
 
@@ -134,77 +131,77 @@ namespace MinMax
             return menu;
         }
 
-        void onPresetSelectChanged(VSTGUI::CControl* pControl)
-        {
-            auto* top = static_cast<VSTGUI::COptionMenu*>(pControl);
+        //void onPresetSelectChanged(VSTGUI::CControl* pControl)
+        //{
+        //    auto* top = static_cast<VSTGUI::COptionMenu*>(pControl);
 
-            VSTGUI::UTF8String fullPath;
+        //    VSTGUI::UTF8String fullPath;
 
-            int32_t idx = -1;
-            if (auto* menu = top->getLastItemMenu(idx))
-            {
-                if (auto* item = menu->getEntry(idx))
-                {
-                    fullPath = item->getKeycode();
-                }
-            }
-            
-            if (fullPath.empty()) return;
+        //    int32_t idx = -1;
+        //    if (auto* menu = top->getLastItemMenu(idx))
+        //    {
+        //        if (auto* item = menu->getEntry(idx))
+        //        {
+        //            fullPath = item->getKeycode();
+        //        }
+        //    }
+        //    
+        //    if (fullPath.empty()) return;
 
-            std::filesystem::path fp = std::filesystem::path(fullPath.getString());
+        //    std::filesystem::path fp = std::filesystem::path(fullPath.getString());
 
-            auto& name = VSTGUI::UTF8String(fp.stem().u8string());
+        //    auto& name = VSTGUI::UTF8String(fp.stem().u8string());
 
-            Preset preset{};
-            preset.Map = map;
-            name.copy(preset.Name, sizeof(preset.Name));
+        //    Preset preset{};
+        //    preset.Map = map;
+        //    name.copy(preset.Name, sizeof(preset.Name));
 
-            int count = 0;
+        //    int count = 0;
 
-            if (optTarget->getCurrentIndex() > 0)
-            {
-                std::filesystem::path path = Files::getPresetPath().append(convertUtf8ToUtf16(name)).replace_extension(Files::FILE_EXT.getString());
-                std::ifstream file(path);
-                std::string line;
+        //    if (optTarget->getCurrentIndex() > 0)
+        //    {
+        //        std::filesystem::path path = Files::getPresetPath().append(convertUtf8ToUtf16(name)).replace_extension(Files::FILE_EXT.getString());
+        //        std::ifstream file(path);
+        //        std::string line;
 
-                while (std::getline(file, line))
-                {
-                    std::vector<std::string> row;
-                    split(line, ',', row);
+        //        while (std::getline(file, line))
+        //        {
+        //            std::vector<std::string> row;
+        //            split(line, ',', row);
 
-                    if (row.size() == 4 && isNumber(row[0]) && isNumber(row[1]))
-                    {
-                        int id = std::atoi(row[0].c_str());
-                        int sb = std::atoi(row[1].c_str());
+        //            if (row.size() == 4 && isNumber(row[0]) && isNumber(row[1]))
+        //            {
+        //                int id = std::atoi(row[0].c_str());
+        //                int sb = std::atoi(row[1].c_str());
 
-                        if (sb == 0)
-                            preset.data[count++] = (id & 0x0fff) | 0x8000;
-                        else
-                            preset.data[count++] = (id & 0x0fff) | 0xc000;
+        //                if (sb == 0)
+        //                    preset.data[count++] = (id & 0x0fff) | 0x8000;
+        //                else
+        //                    preset.data[count++] = (id & 0x0fff) | 0xc000;
 
-                        if (count >= PRESET_SIZE) goto L1000;
+        //                if (count >= PRESET_SIZE) goto L1000;
 
-                        std::vector<std::string> pitchs;
-                        split(row[3], '|', pitchs);
+        //                std::vector<std::string> pitchs;
+        //                split(row[3], '|', pitchs);
 
-                        for each (auto p in pitchs)
-                        {
-                            if (isNumber(p)) preset.data[count++] = std::atoi(p.c_str());
-                            if (count >= PRESET_SIZE) goto L1000;
-                        }
-                    }
-                }
-            }
-        L1000:
-            if (auto message = Steinberg::owned(editor->getController()->allocateMessage()))
-            {
-                message->setMessageID(MsgPreset);
-                if (auto attr = message->getAttributes())
-                    attr->setBinary(MsgPreset, &preset, sizeof(Preset));
-                if (editor->getController() == nullptr) return;
-                editor->getController()->getPeer()->notify(message);
-            }
-        }
+        //                for each (auto p in pitchs)
+        //                {
+        //                    if (isNumber(p)) preset.data[count++] = std::atoi(p.c_str());
+        //                    if (count >= PRESET_SIZE) goto L1000;
+        //                }
+        //            }
+        //        }
+        //    }
+        //L1000:
+        //    if (auto message = Steinberg::owned(editor->getController()->allocateMessage()))
+        //    {
+        //        message->setMessageID(MsgPreset);
+        //        if (auto attr = message->getAttributes())
+        //            attr->setBinary(MsgPreset, &preset, sizeof(Preset));
+        //        if (editor->getController() == nullptr) return;
+        //        editor->getController()->getPeer()->notify(message);
+        //    }
+        //}
 
         template<typename F>
         static void addMenuCommand(VSTGUI::COptionMenu* menu, const VSTGUI::UTF8String& title, F&& cb)
