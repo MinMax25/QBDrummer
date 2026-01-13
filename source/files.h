@@ -8,7 +8,6 @@
 #include <string>
 #include <vstgui/lib/cstring.h>
 
-
 namespace MinMax
 {
     const struct Files

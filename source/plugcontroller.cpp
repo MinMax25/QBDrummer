@@ -1,7 +1,6 @@
 //------------------------------------------------------------------------
 // Copyright(c) 2024 MinMax.
 //------------------------------------------------------------------------
-
 #include <base/source/fstreamer.h>
 #include <pluginterfaces/base/fplatform.h>
 #include <pluginterfaces/base/fstrdefs.h>
