@@ -38,7 +38,7 @@ namespace MinMax
 		Steinberg::tresult PLUGIN_API process(Steinberg::Vst::ProcessData& data) SMTG_OVERRIDE;
 		Steinberg::tresult PLUGIN_API setState(Steinberg::IBStream* state) SMTG_OVERRIDE;
 		Steinberg::tresult PLUGIN_API getState(Steinberg::IBStream* state) SMTG_OVERRIDE;
-		Steinberg::tresult PLUGIN_API notify(IMessage* message) SMTG_OVERRIDE;
+		Steinberg::tresult PLUGIN_API notify(Steinberg::Vst::IMessage* message) SMTG_OVERRIDE;
 
 	protected:
 		// -- ’Ç‰Á•”•ª
@@ -46,10 +46,10 @@ namespace MinMax
 		void PLUGIN_API processParameter(Vst::ProcessData& data);
 		void PLUGIN_API processEvent(Vst::ProcessData& data);
 		void PLUGIN_API processAudio(Vst::ProcessData& data);
-		void PLUGIN_API setParmeterValue(ParamID tag, ParamValue value);
+		void PLUGIN_API setParmeterValue(Steinberg::Vst::ParamID tag, Steinberg::Vst::ParamValue value);
 		void PLUGIN_API AllNotesOff(Vst::ProcessData& data);
-		void PLUGIN_API noteOnProc(IEventList& list, Event& event);
-		void PLUGIN_API noteOffProc(IEventList& list, Event& event);
+		void PLUGIN_API noteOnProc(Steinberg::Vst::IEventList& list, Steinberg::Vst::Event& event);
+		void PLUGIN_API noteOffProc(Steinberg::Vst::IEventList& list, Steinberg::Vst::Event& event);
 		int16 PLUGIN_API getOutPitch(int16 inPitch);
 		void rebuildNoteTable();
 

@@ -119,6 +119,8 @@ namespace MinMax
 
 	tresult PLUGIN_API MyVSTProcessor::process(Vst::ProcessData& data)
 	{
+		using namespace Steinberg::Vst;
+
 		processParameter(data);
 
 		if (Bypass)
@@ -154,6 +156,8 @@ namespace MinMax
 
 	void PLUGIN_API MyVSTProcessor::AllNotesOff(Vst::ProcessData& data)
 	{
+		using namespace Steinberg::Vst;
+
 		auto outEventList = data.outputEvents;
 		if (outEventList == NULL) return;
 		for (int ch = 0; ch < 16; ch++)
@@ -180,6 +184,8 @@ namespace MinMax
 
 	void PLUGIN_API MyVSTProcessor::processParameter(Vst::ProcessData& data)
 	{
+		using namespace Steinberg::Vst;
+
 		if (data.inputParameterChanges == NULL) return;
 
 		int32 paramChangeCount = data.inputParameterChanges->getParameterCount();
@@ -200,7 +206,7 @@ namespace MinMax
 		}
 	}
 
-	void PLUGIN_API MyVSTProcessor::setParmeterValue(ParamID tag, ParamValue value)
+	void PLUGIN_API MyVSTProcessor::setParmeterValue(Steinberg::Vst::ParamID tag, Steinberg::Vst::ParamValue value)
 	{
 		if (tag == PARAM_ID::BYPASS)
 		{
@@ -229,6 +235,8 @@ namespace MinMax
 
 	void PLUGIN_API MyVSTProcessor::processEvent(Vst::ProcessData& data)
 	{
+		using namespace Steinberg::Vst;
+
 		auto eventList = data.inputEvents;
 		auto outEventList = data.outputEvents;
 
@@ -256,8 +264,10 @@ namespace MinMax
 		}
 	}
 
-	void PLUGIN_API MyVSTProcessor::noteOnProc(IEventList& list, Event& event)
+	void PLUGIN_API MyVSTProcessor::noteOnProc(Steinberg::Vst::IEventList& list, Steinberg::Vst::Event& event)
 	{
+		using namespace Steinberg::Vst;
+
 		int16 outPitch = getOutPitch(event.noteOn.pitch);
 		if (0 < outPitch && outPitch < 128)
 		{
@@ -274,8 +284,10 @@ namespace MinMax
 		}
 	}
 
-	void PLUGIN_API MyVSTProcessor::noteOffProc(IEventList& list, Event& event)
+	void PLUGIN_API MyVSTProcessor::noteOffProc(Steinberg::Vst::IEventList& list, Steinberg::Vst::Event& event)
 	{
+		using namespace Steinberg::Vst;
+
 		int16 outPitch = getOutPitch(event.noteOff.pitch);
 		if (0 < outPitch && outPitch < 128)
 		{
@@ -347,7 +359,7 @@ namespace MinMax
 
 #pragma region ユーティリティ等
 
-	tresult PLUGIN_API MyVSTProcessor::notify(IMessage* message)
+	tresult PLUGIN_API MyVSTProcessor::notify(Steinberg::Vst::IMessage* message)
 	{
 		auto msgID = message->getMessageID();
 		const void* msgData;

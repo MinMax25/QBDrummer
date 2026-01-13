@@ -21,6 +21,8 @@ namespace MinMax
 {
 	tresult PLUGIN_API MyVSTController::initialize(FUnknown* context)
 	{
+		using namespace Steinberg::Vst;
+
 		tresult result = EditControllerEx1::initialize(context);
 		if (result != kResultOk)  return result;
 
