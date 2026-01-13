@@ -131,7 +131,7 @@ namespace MinMax
                     if (file.path().extension() != ".csv") continue;
 
                     auto* fileItem = new VSTGUI::CMenuItem(file.path().stem().u8string().c_str(), -1);
-                    fileItem->setKey(folder.path().u8string());
+                    fileItem->setKey(file.path().u8string());
                     dirMenu->addEntry(fileItem);
                     itemCount++;
 
