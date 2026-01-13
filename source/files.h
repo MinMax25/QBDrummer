@@ -5,11 +5,7 @@
 
 #include <cstdlib>
 #include <filesystem>
-#include <pluginterfaces/base/ftypes.h>
-#include <pluginterfaces/base/funknown.h>
 #include <string>
-#include <system_error>
-#include <vector>
 #include <vstgui/lib/cstring.h>
 
 

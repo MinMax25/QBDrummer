@@ -1,10 +1,8 @@
 #pragma once
 
-#include <base/source/fstring.h>
 #include <condition_variable>
 #include <mutex>
 #include <pluginterfaces/base/ftypes.h>
-#include <pluginterfaces/vst/ivstevents.h>
 
 namespace MinMax
 {

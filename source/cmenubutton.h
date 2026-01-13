@@ -16,31 +16,6 @@
 
 namespace MinMax
 {
-    class CSelectMenu
-        : public VSTGUI::COptionMenu
-    {
-    public:
-        using onClickCallBack = std::function<void(CSelectMenu*, VSTGUI::UTF8String)>;
-
-        CSelectMenu(onClickCallBack cb)
-            : COptionMenu()
-            , onClick(cb)
-        {
-        }
-
-        void valueChanged() override
-        {
-            if (!lastMenu) return;           
-            if (auto value = lastMenu->getCurrent())
-            {
-                if (onClick) onClick(this, value->getKeycode());
-            }
-        }
-
-    protected:
-        onClickCallBack onClick;
-    };
-
     // メニュー表示ボタン
     class CMenuButton
         : public VSTGUI::CTextButton

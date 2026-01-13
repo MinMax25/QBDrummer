@@ -29,6 +29,7 @@
 #include <vstgui/uidescription/uiviewfactory.h>
 
 #include "cmenubutton.h"
+#include "cselectmenu.h"
 #include "files.h"
 #include "plugdefine.h"
 
