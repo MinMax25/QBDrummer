@@ -99,38 +99,45 @@ namespace MinMax
 
         CSelectMenu* createOpenPresetMenu()
         {
+            Files::createPresetDirectory();
+
             auto* menu =
                 new CSelectMenu(
                     [this](VSTGUI::CControl* pControl, VSTGUI::UTF8String path) { onPresetSelectChanged(path); }
                 );
 
+            int itemCount = 0;
             VSTGUI::COptionMenu* dirMenu = nullptr;
             VSTGUI::CMenuItem* dirItem = nullptr;
 
-            for (const std::filesystem::directory_entry& p : std::filesystem::recursive_directory_iterator(Files::getPresetPath()))
+            for (const std::filesystem::directory_entry& folder : std::filesystem::directory_iterator(Files::getPresetPath()))
             {
-                if (p.is_directory())
-                {
-                    if (dirItem && dirMenu)
-                    {
-                        dirItem->setSubmenu(dirMenu);
-                        menu->addEntry(dirItem);
-                        dirMenu->forget();
-                    }
-                    dirItem = new VSTGUI::CMenuItem(p.path().stem().u8string().c_str());
-                    dirMenu = new VSTGUI::COptionMenu();
-                }
-                else
-                {
-                    if (!dirMenu) continue;
+                if (!folder.is_directory()) continue;
+                if (std::filesystem::is_empty(folder.path())) continue;
 
-                    auto* fileItem = new VSTGUI::CMenuItem(p.path().stem().u8string().c_str(), -1);
-                    fileItem->setKey(p.path().u8string());
+                if (itemCount > 0)
+                {
+                    dirItem->setSubmenu(dirMenu);
+                    menu->addEntry(dirItem);
+                    dirMenu->forget();
+                }
+
+                dirItem = new VSTGUI::CMenuItem(folder.path().stem().u8string().c_str());
+                dirMenu = new VSTGUI::COptionMenu();
+
+                for (const std::filesystem::directory_entry& file : std::filesystem::directory_iterator(folder.path()))
+                {
+                    if (file.path().extension() != ".csv") continue;
+
+                    auto* fileItem = new VSTGUI::CMenuItem(file.path().stem().u8string().c_str(), -1);
+                    fileItem->setKey(folder.path().u8string());
                     dirMenu->addEntry(fileItem);
+                    itemCount++;
+
                 }
             }
 
-            if (dirItem && dirMenu)
+            if (itemCount > 0)
             {
                 dirItem->setSubmenu(dirMenu);
                 menu->addEntry(dirItem);
