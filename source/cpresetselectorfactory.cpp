@@ -106,9 +106,9 @@ namespace MinMax
                     [this](VSTGUI::CControl* pControl, VSTGUI::UTF8String path) { onPresetSelectChanged(path); }
                 );
 
-            int itemCount = 0;
             VSTGUI::COptionMenu* dirMenu = nullptr;
             VSTGUI::CMenuItem* dirItem = nullptr;
+            int itemCount = 0;
 
             for (const std::filesystem::directory_entry& folder : std::filesystem::directory_iterator(Files::getPresetPath()))
             {
