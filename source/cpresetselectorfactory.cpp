@@ -208,19 +208,6 @@ namespace MinMax
             }
         }
 
-        template<typename F>
-        static void addMenuCommand(VSTGUI::COptionMenu* menu, const VSTGUI::UTF8String& title, F&& cb)
-        {
-            auto* item = new VSTGUI::CCommandMenuItem(VSTGUI::CCommandMenuItem::Desc(title));
-            item->setActions(std::forward<F>(cb));
-            menu->addEntry(item);
-        }
- 
-        void showError(const std::string& msg)
-        {
-            //VSTGUI::CAlertBox::show("Error", msg.c_str(), getFrame()); // UI ì‡ï\é¶Ç…ïœçX
-        }
-
         void split(std::string const& str, const char delim, std::vector<std::string>& out)
         {
             std::stringstream ss(str);
