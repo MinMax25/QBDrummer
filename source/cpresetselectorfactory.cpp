@@ -42,6 +42,8 @@ namespace MinMax
         CPresetSelector(const VSTGUI::UIAttributes& attributes, const VSTGUI::IUIDescription* description, const VSTGUI::CRect& size)
             : CViewContainer(size)
         {
+            Files::createPresetDirectory();
+            
             editor = static_cast<VSTGUI::VST3Editor*>(description->getController());
 
             map = std::stoi(attributes.getAttributeValue("custom-view-name")->c_str());
