@@ -1,6 +1,9 @@
+/***************
+ * QBDrummer
+ */
 MIT License
 
-Copyright (c) 2024 MinMax
+Copyright (c) 2024 Min Max
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
