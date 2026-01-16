@@ -1,4 +1,4 @@
-//------------------------------------------------------------------------
+ï»¿//------------------------------------------------------------------------
 // Copyright(c) 2024 MinMax.
 //------------------------------------------------------------------------
 #pragma once
@@ -41,7 +41,7 @@ namespace MinMax
 		Steinberg::tresult PLUGIN_API notify(Steinberg::Vst::IMessage* message) SMTG_OVERRIDE;
 
 	protected:
-		// -- ’Ç‰Á•”•ª
+		// -- è¿½åŠ éƒ¨åˆ†
 
 		void PLUGIN_API processParameter(Vst::ProcessData& data);
 		void PLUGIN_API processEvent(Vst::ProcessData& data);
