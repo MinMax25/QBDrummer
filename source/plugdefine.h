@@ -10,7 +10,6 @@
 namespace MinMax
 {
 	using namespace Steinberg;
-	//using namespace Steinberg::Vst;
 
 	inline constexpr auto MsgPreset = "Preset";
 
