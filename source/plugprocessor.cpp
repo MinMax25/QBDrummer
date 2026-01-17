@@ -68,6 +68,7 @@ namespace MinMax
 		IBStreamer streamer(state, kLittleEndian);
 
 		streamer.readBool(Bypass);
+		streamer.readBool(TabIndex);
 		streamer.readBool(Translate);
 
 		streamer.readRaw(&Map1, sizeof(Preset));
@@ -88,6 +89,7 @@ namespace MinMax
 		getAllPreset(&Map1, &Map2);
 
 		streamer.writeBool(Bypass);
+		streamer.writeBool(TabIndex);
 		streamer.writeBool(Translate);
 
 		streamer.writeRaw(&Map1, sizeof(Preset));

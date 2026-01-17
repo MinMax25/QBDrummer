@@ -22,6 +22,7 @@ namespace MinMax
 	enum PARAM_ID
 	{
 		BYPASS = 1,
+		TAB_INDEX,
 		TRANSLATE = 1001,
 	};
 

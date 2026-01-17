@@ -97,6 +97,7 @@ namespace MinMax
 		bool NeedReset = false;
 
 		bool Bypass = false;
+		bool TabIndex = false;
 		bool Translate = true;
 
 		Preset Map1{};

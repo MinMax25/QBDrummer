@@ -26,8 +26,16 @@ namespace MinMax
 		if (result != kResultOk)  return result;
 
 		int32 flags;
+
 		flags = ParameterInfo::kCanAutomate | ParameterInfo::kIsBypass;
 		parameters.addParameter(STR16("Bypass"), nullptr, 1, 0, flags, PARAM_ID::BYPASS);
+
+		flags = ParameterInfo::kIsHidden;
+		StringListParameter* tabIndex = new StringListParameter(STR16("Tab Index"), PARAM_ID::TAB_INDEX);
+		tabIndex->appendString(STR16("Edit"));
+		tabIndex->appendString(STR16("Info"));
+		parameters.addParameter(tabIndex);
+
 
 		StringListParameter* translate = new StringListParameter(STR16("Translate"), PARAM_ID::TRANSLATE);
 		translate->appendString(STR16("Off"));
@@ -51,6 +59,10 @@ namespace MinMax
 		if (streamer.readBool(Bypass) == false) return kResultFalse;
 		setParamNormalized(PARAM_ID::BYPASS, Bypass ? 1 : 0);
 
+		bool tabIndex;
+		if (streamer.readBool(tabIndex) == false) return kResultFalse;
+		setParamNormalized(PARAM_ID::TAB_INDEX, tabIndex ? 1 : 0);
+
 		bool Translate;
 		if (streamer.readBool(Translate) == false) return kResultFalse;
 		setParamNormalized(PARAM_ID::TRANSLATE, Translate ? 1 : 0);
@@ -69,6 +81,12 @@ namespace MinMax
 		performEdit(PARAM_ID::BYPASS, Bypass ? 1 : 0);
 		endEdit(PARAM_ID::BYPASS);
 
+		bool tabIndex;
+		if (streamer.readBool(tabIndex) == false) return kResultFalse;
+		beginEdit(PARAM_ID::TAB_INDEX);
+		performEdit(PARAM_ID::TAB_INDEX, tabIndex ? 1 : 0);
+		endEdit(PARAM_ID::TAB_INDEX);
+
 		bool Translate;
 		if (streamer.readBool(Translate) == false) return kResultFalse;
 		beginEdit(PARAM_ID::TRANSLATE);
@@ -84,9 +102,11 @@ namespace MinMax
 		IBStreamer streamer(state, kLittleEndian);
 
 		bool bypass = getParamNormalized(PARAM_ID::BYPASS) > 0.5;
+		bool tabIndex = getParamNormalized(PARAM_ID::TAB_INDEX) > 0.5;
 		bool translate = getParamNormalized(PARAM_ID::TRANSLATE) > 0.5;
 
 		streamer.writeBool(bypass);
+		streamer.writeBool(tabIndex);
 		streamer.writeBool(translate);
 
 		return kResultTrue;
