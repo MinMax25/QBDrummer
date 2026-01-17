@@ -1,7 +1,14 @@
 {
 	"vstgui-ui-description": {
 		"version": "1",
-		"bitmaps": {},
+		"bitmaps": {
+			"QB": {
+				"path": "F:\\projects\\QB\\QBDrummer\\resource\\QB.png"
+			},
+			"licensing_6": {
+				"path": "F:\\projects\\QB\\QBDrummer\\resource\\licensing_6.png"
+			}
+		},
 		"fonts": {
 			"Title Font": {
 				"bold": "true",
@@ -42,7 +49,7 @@
 		"custom": {
 			"FocusDrawing": {},
 			"VST3Editor": {
-				"Path": "F:/projects/QB/QB Drummer/resource/plugeditor.uidesc"
+				"Path": "F:\\projects\\QB\\QBDrummer\\resource\\plugeditor.uidesc"
 			},
 			"UIGridController": {
 				"Grids": "1x 1,5x 5,10x 10,12x 12,15x 15"
@@ -52,19 +59,19 @@
 			},
 			"UIEditController": {
 				"EditViewScale": "1",
-				"EditorSize": "0, 0, 1920, 976",
+				"EditorSize": "0, 0, 1664, 976",
 				"SplitViewSize_0_0": "0.7968421052631579071245937484491150826216",
 				"SplitViewSize_0_1": "0.1821052631578947422763548047441872768104",
 				"SplitViewSize_1_0": "0.6357894736842105709584416217694524675608",
 				"SplitViewSize_1_1": "0.3599999999999999866773237044981215149164",
-				"SplitViewSize_2_0": "0.4906249999999999777955395074968691915274",
-				"SplitViewSize_2_1": "0.5067708333333332815229255174926947802305",
-				"TabSwitchValue": "1",
+				"SplitViewSize_2_0": "0.4122596153846153632649418341316049918532",
+				"SplitViewSize_2_1": "0.5847355769230768718358604019158519804478",
+				"TabSwitchValue": "0",
 				"Version": "1"
 			},
 			"UIAttributesController": {},
 			"UIViewCreatorDataSource": {
-				"SelectedRow": "9"
+				"SelectedRow": "21"
 			},
 			"UIColorsDataSource": {
 				"SelectedRow": "1"
@@ -73,7 +80,7 @@
 				"SelectedRow": "1"
 			},
 			"UIBitmapsDataSource": {
-				"SelectedRow": "-1"
+				"SelectedRow": "0"
 			},
 			"UITagsDataSource": {
 				"SelectedRow": "1"
@@ -203,16 +210,12 @@
 						"attributes": {
 							"class": "CSegmentButton",
 							"control-tag": "TRANSLATE",
-							"default-value": "0",
 							"font": "~ NormalFont",
 							"frame-color": "~ BlackCColor",
 							"frame-width": "1",
 							"gradient": "Default TextButton Gradient",
 							"gradient-highlighted": "Default TextButton Gradient Highlighted",
 							"icon-text-margin": "0",
-							"max-value": "1",
-							"min-value": "0",
-							"mouse-enabled": "true",
 							"opacity": "1",
 							"origin": "220, 160",
 							"round-radius": "5",
@@ -336,6 +339,32 @@
 							"transparent": "false",
 							"value-precision": "2",
 							"wants-focus": "false",
+							"wheel-inc-value": "0.1"
+						}
+					},
+					"CSegmentButton": {
+						"attributes": {
+							"class": "CSegmentButton",
+							"default-value": "0.5",
+							"font": "~ NormalFontSmaller",
+							"frame-color": "~ TransparentCColor",
+							"frame-width": "1",
+							"icon-text-margin": "0",
+							"max-value": "1",
+							"min-value": "0",
+							"mouse-enabled": "true",
+							"opacity": "1",
+							"origin": "20, 0",
+							"round-radius": "5",
+							"segment-names": "Edit,Info",
+							"selection-mode": "Single",
+							"size": "60, 15",
+							"style": "horizontal",
+							"text-alignment": "center",
+							"text-color": "Color:Background",
+							"text-color-highlighted": "~ WhiteCColor",
+							"transparent": "false",
+							"wants-focus": "true",
 							"wheel-inc-value": "0.1"
 						}
 					}
