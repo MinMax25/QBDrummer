@@ -18,7 +18,9 @@
 		},
 		"colors": {
 			"Color:Background": "#4c4c4cff",
-			"Color:Title": "#c2c8ffff"
+			"Color:Title": "#c2c8ffff",
+			"Dark": "#343434ff",
+			"Dark Deep": "#1b1b1bff"
 		},
 		"gradients": {
 			"Default TextButton Gradient": [
@@ -40,6 +42,16 @@
 					"rgba": "#646464ff",
 					"start": "1"
 				}
+			],
+			"Menu Button Gradient": [
+				{
+					"rgba": "#808080ff",
+					"start": "0"
+				},
+				{
+					"rgba": "#808080ff",
+					"start": "1"
+				}
 			]
 		},
 		"control-tags": {
@@ -56,18 +68,18 @@
 				"Grids": "1x 1,5x 5,10x 10,12x 12,15x 15"
 			},
 			"UITemplateController": {
-				"SelectedTemplate": "tab1"
+				"SelectedTemplate": "view"
 			},
 			"UIEditController": {
 				"EditViewScale": "1",
 				"EditorSize": "0, 0, 1664, 898",
 				"SplitViewSize_0_0": "0.7786697247706422242430335245444439351559",
 				"SplitViewSize_0_1": "0.1983944954128440407714606408262625336647",
-				"SplitViewSize_1_0": "0.2224770642201834847107022596901515498757",
-				"SplitViewSize_1_1": "0.7729357798165137349855058346292935311794",
+				"SplitViewSize_1_0": "0.2614678899082568674927529173146467655897",
+				"SplitViewSize_1_1": "0.733944954128440407714606408262625336647",
 				"SplitViewSize_2_0": "0.4122596153846153632649418341316049918532",
 				"SplitViewSize_2_1": "0.5847355769230768718358604019158519804478",
-				"TabSwitchValue": "0",
+				"TabSwitchValue": "3",
 				"Version": "1"
 			},
 			"UIAttributesController": {},
@@ -75,10 +87,10 @@
 				"SelectedRow": "28"
 			},
 			"UIColorsDataSource": {
-				"SelectedRow": "1"
+				"SelectedRow": "2"
 			},
 			"UIGradientsDataSource": {
-				"SelectedRow": "1"
+				"SelectedRow": "2"
 			},
 			"UIBitmapsDataSource": {
 				"SelectedRow": "1"
@@ -93,7 +105,7 @@
 		"templates": {
 			"view": {
 				"attributes": {
-					"background-color": "~ GreyCColor",
+					"background-color": "Dark Deep",
 					"background-color-draw-style": "filled and stroked",
 					"class": "CViewContainer",
 					"mouse-enabled": "true",
@@ -170,7 +182,7 @@
 							"animation-style": "fade",
 							"animation-time": "120",
 							"animation-timing-function": "linear",
-							"background-color": "~ GreyCColor",
+							"background-color": "~ TransparentCColor",
 							"background-color-draw-style": "filled and stroked",
 							"class": "UIViewSwitchContainer",
 							"mouse-enabled": "true",
@@ -187,7 +199,7 @@
 			},
 			"tab1": {
 				"attributes": {
-					"background-color": "~ GreyCColor",
+					"background-color": "~ TransparentCColor",
 					"background-color-draw-style": "filled and stroked",
 					"class": "CViewContainer",
 					"mouse-enabled": "true",
@@ -403,7 +415,7 @@
 			},
 			"tab2": {
 				"attributes": {
-					"background-color": "~ GreyCColor",
+					"background-color": "~ TransparentCColor",
 					"background-color-draw-style": "filled and stroked",
 					"class": "CViewContainer",
 					"mouse-enabled": "true",
