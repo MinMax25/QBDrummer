@@ -46,7 +46,11 @@ namespace MinMax
             
             editor = static_cast<VSTGUI::VST3Editor*>(description->getController());
 
-            map = std::stoi(attributes.getAttributeValue("custom-view-name")->c_str());
+            auto* vn = attributes.getAttributeValue("custom-view-name");
+            if (vn)
+            {
+                map = std::stoi(attributes.getAttributeValue("custom-view-name")->c_str());
+            }
 
             setBackgroundColor(VSTGUI::kTransparentCColor);
             setViewSize(VSTGUI::CRect(0, 0, 420, 20));
