@@ -56,7 +56,7 @@
 				"Grids": "1x 1,5x 5,10x 10,12x 12,15x 15"
 			},
 			"UITemplateController": {
-				"SelectedTemplate": "view"
+				"SelectedTemplate": "tab1"
 			},
 			"UIEditController": {
 				"EditViewScale": "1",
@@ -283,7 +283,7 @@
 							"gradient-highlighted": "Default TextButton Gradient Highlighted",
 							"icon-text-margin": "0",
 							"opacity": "1",
-							"origin": "200, 70",
+							"origin": "210, 190",
 							"round-radius": "5",
 							"segment-names": "Off,On",
 							"selection-mode": "Single",
@@ -312,7 +312,7 @@
 							"min-value": "0",
 							"mouse-enabled": "true",
 							"opacity": "1",
-							"origin": "130, 70",
+							"origin": "140, 190",
 							"round-rect-radius": "6",
 							"shadow-color": "~ RedCColor",
 							"size": "70, 20",
@@ -349,7 +349,7 @@
 							"min-value": "0",
 							"mouse-enabled": "true",
 							"opacity": "1",
-							"origin": "0, 0",
+							"origin": "0, 20",
 							"round-rect-radius": "6",
 							"shadow-color": "~ RedCColor",
 							"size": "430, 60",
