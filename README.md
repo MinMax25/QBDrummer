@@ -147,6 +147,13 @@ VST3 SDK path according to your development environment.
 
 ---
 
+## Third-Party Notices
+
+This product uses the Steinberg VST3 SDK.
+VST is a trademark of Steinberg Media Technologies GmbH.
+
+---
+
 ## 📄 ライセンス | License
 
 MIT License
