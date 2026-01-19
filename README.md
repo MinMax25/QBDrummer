@@ -1,66 +1,46 @@
 # QBDrummer
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](Resources/license.txt)
+[![VST3](https://img.shields.io/badge/VST3-MIDI%20Plugin-green)](https://steinberg.net/)
+[![Platform](https://img.shields.io/badge/Platform-Windows-blue)](#)
 
-VST3 MIDI Utility Plugin  
-Drum MIDI note mapping plugin for different drum instruments
-
----
-
-## ❓ QBDrummer とは | What is QBDrummer?
-
-**QBDrummer** は、  
-ドラムマップ編集ツール **QBDrumMap** と連携して動作する  
-**VST3 MIDI ユーティリティプラグイン**です。
-
+DAW（Studio One、Cubase）で使用する **ドラム用 MIDI プラグイン** です。  
 QBDrumMap で作成したドラムマップを使用し、  
-DAW 内でドラム MIDI を **リアルタイムに変換**します。
+ドラム MIDI をリアルタイムに変換します。
 
-> ※ QBDrummer 単体ではマップ編集はできません
-
----
-
-**QBDrummer** is a **VST3 MIDI utility plugin**  
-that works together with **QBDrumMap**, a standalone drum map editor.
-
-It translates drum MIDI notes **in real time** inside your DAW  
-using drum maps created with QBDrumMap.
-
-> Note: QBDrummer itself does not provide map editing features.
+A **drum MIDI plugin** for DAWs such as **Studio One** and **Cubase**.  
+It converts drum MIDI in real time using drum maps created with **QBDrumMap**.
 
 ---
 
-## 🎯 できること | Features
+## 🎯 役割 | Role
 
-- ドラム音源ごとのノート配置をリアルタイム補正  
-- 既存のドラム MIDI を書き換えずに使用可能  
-- ドラム音源を差し替えても MIDI 修正不要  
-- Audio は一切加工しない（MIDI のみ処理）
+- **QBDrumMap**：ドラムマップの作成・編集（スタンドアロン）
+- **QBDrummer**：ドラムマップの適用・変換（VST3 プラグイン）
 
 ---
 
-- Real-time drum MIDI note translation  
-- No need to rewrite existing drum MIDI data  
-- Switch drum instruments without fixing MIDI  
-- Audio is passed through unchanged (MIDI only)
+- **QBDrumMap**: Drum map creation and editing (standalone tool)  
+- **QBDrummer**: Drum map playback and MIDI translation (VST3 plugin)
 
 ---
 
-## 🧠 仕組み | How it works
+## 🧠 概要 | Overview
 
-QBDrummer は、単純なノート番号の置換ではなく、  
-**ドラムの意味（Articulation）**を経由して変換します。
+QBDrummer は、  
+異なるドラム音源間で発生する **ノート配置の違い** を吸収するための  
+**MIDI ユーティリティプラグイン**です。
 
-
-この方式により、  
-同じ MIDI を異なるドラム音源で使用しても  
-意図したドラム構成を保つことができます。
+ドラムマップを介して  
+「ドラムの意味（Articulation）」を基準に変換を行うため、  
+同じ MIDI データを複数のドラム音源で使い回すことができます。
 
 ---
 
-Instead of simple note-to-note remapping,  
-QBDrummer uses **drum articulations** as an intermediate layer.
+QBDrummer is a **MIDI utility plugin** designed to absorb  
+differences in drum note layouts between drum instruments.
 
-This allows the same MIDI pattern to work correctly  
-across different drum instruments.
+By converting MIDI through **drum articulations**,  
+the same drum MIDI data can be reused across multiple instruments.
 
 ---
 
@@ -100,30 +80,25 @@ In Studio One, QBDrummer can be used as a **Note FX**.
 
 ---
 
-## 💡 こんな人におすすめ | Recommended for
+## 📦 ダウンロード・インストール | Download & Installation
 
-- 複数のドラム音源を使い分けている  
-- 市販のドラム MIDI パックをよく使う  
-- 過去曲のドラム MIDI を流用したい  
-- ドラム音源を変えるたびにノートを直すのに疲れた  
+### 手順 | Steps
 
----
-
-- Users who use multiple drum instruments  
-- Users who often use commercial drum MIDI packs  
-- Users who want to reuse existing drum MIDI data  
-- Anyone tired of fixing drum notes every time they change instruments  
+1. このページ右側の **Releases** からダウンロードしてください。  
+2. ダウンロードした zip を展開します。  
+3. 生成された **VST3 ファイル** を  
+   VST3 フォルダに配置してください。
 
 ---
 
-## 📦 ダウンロード | Download
+1. Download from **Releases** on this page.  
+2. Extract the zip file.  
+3. Copy the **VST3 file** to your VST3 directory.
 
-### バイナリ | Binary
-GitHub Releases からダウンロードしてください。  
-Download from GitHub Releases.
+### VST3 インストール先 | VST3 Location
 
-👉  
-https://github.com/MinMax25/QBDrummer/releases
+- Windows  
+  `C:\Program Files\Common Files\VST3`
 
 ---
 
@@ -139,7 +114,7 @@ Other VST3-compatible DAWs should work as well.
 
 ## ⚠️ 注意事項 | Notes
 
-- QBDrummer は **MIDI 用 VST3 プラグイン**です  
+- QBDrummer は **MIDI 専用 VST3 プラグイン**です  
 - Audio の加工は行いません  
 - 別途 **QBDrumMap** が必要です  
 
@@ -154,13 +129,6 @@ Other VST3-compatible DAWs should work as well.
 ## 📄 ライセンス | License
 
 MIT License
-
----
-
-## 🙋 サポート・フィードバック | Support & Feedback
-
-- バグ報告・要望：GitHub Issues  
-- Bug reports and feature requests: GitHub Issues
 
 ---
 
