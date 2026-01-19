@@ -383,7 +383,7 @@ namespace MinMax
 
 		rebuildNoteTable();
 
-		return kResultFalse;
+		return kResultTrue;
 	}
 
 	void MyVSTProcessor::rebuildNoteTable()
