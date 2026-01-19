@@ -68,7 +68,7 @@
 				"Grids": "1x 1,5x 5,10x 10,12x 12,15x 15"
 			},
 			"UITemplateController": {
-				"SelectedTemplate": "view"
+				"SelectedTemplate": "tab2"
 			},
 			"UIEditController": {
 				"EditViewScale": "1",
@@ -458,7 +458,7 @@
 							"default-value": "0.5",
 							"font": "~ NormalFontSmall",
 							"font-antialias": "true",
-							"font-color": "~ BlackCColor",
+							"font-color": "~ WhiteCColor",
 							"frame-color": "~ TransparentCColor",
 							"frame-width": "1",
 							"max-value": "1",
@@ -495,7 +495,7 @@
 							"default-value": "0.5",
 							"font": "~ NormalFontSmall",
 							"font-antialias": "true",
-							"font-color": "~ BlackCColor",
+							"font-color": "~ WhiteCColor",
 							"frame-color": "~ TransparentCColor",
 							"frame-width": "1",
 							"max-value": "1",
@@ -532,7 +532,7 @@
 							"default-value": "0.5",
 							"font": "~ NormalFontSmall",
 							"font-antialias": "true",
-							"font-color": "~ BlackCColor",
+							"font-color": "~ GreyCColor",
 							"frame-color": "~ TransparentCColor",
 							"frame-width": "1",
 							"max-value": "1",
