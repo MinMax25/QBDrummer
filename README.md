@@ -124,6 +124,27 @@ Other VST3-compatible DAWs should work as well.
 - Audio is not processed  
 - **QBDrumMap** is required
 
+  
+---
+
+## Build Requirements
+
+This project is a VST3 MIDI plugin built using the Steinberg VST3 SDK.
+
+To build QBDrummer from source, you will need:
+
+- Windows 10 or later
+- Visual Studio 2022
+- Steinberg VST3 SDK
+
+The VST3 SDK is **not included** in this repository.
+Please download it from the official Steinberg website:
+
+https://developer.steinberg.help/display/VST/VST+3+SDK
+
+After downloading the SDK, configure your project to reference the local
+VST3 SDK path according to your development environment.
+
 ---
 
 ## 📄 ライセンス | License
