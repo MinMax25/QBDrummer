@@ -10,6 +10,8 @@ QBDrumMap で作成したドラムマップを使用し、
 A **drum MIDI plugin** for DAWs such as **Studio One** and **Cubase**.  
 It converts drum MIDI in real time using drum maps created with **QBDrumMap**.
 
+![QBDrummer Screenshot](Resources/images/screenshot_main.png)
+
 ---
 
 ## 🎯 役割 | Role
