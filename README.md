@@ -102,6 +102,19 @@ In Studio One, QBDrummer can be used as a **Note FX**.
 - Windows  
   `C:\Program Files\Common Files\VST3`
 
+### プリセット保存先 | Preset Location
+
+QBDrummer のドラムマップ（プリセット）は、以下のフォルダに保存されます。   
+Drum map presets are stored in the following directory:   
+
+%USERPROFILE%\Documents\VST3 Presets\MinMax\QBDrummer\Maps
+
+※ `%USERPROFILE%` はユーザーごとに異なります  
+
+   `%USERPROFILE%` depends on the current Windows user  
+
+(e.g. `C:\Users\YourName`)   
+
 ---
 
 ## 🧪 動作確認済み DAW | Tested DAWs
