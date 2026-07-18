@@ -24,6 +24,12 @@ add_subdirectory(${vst3sdk_SOURCE_DIR} ${PROJECT_BINARY_DIR}/vst3sdk)
 smtg_enable_vst3_sdk()
 
 smtg_add_vst3plugin(QBDrummer
+    source/cmenubutton.h
+    source/cpresetselectorfactory.cpp
+    source/cselectmenu.h
+    source/debug_log.h
+    source/files.h
+    source/plugdefine.h
     source/version.h
     source/plugcids.h
     source/plugprocessor.h
